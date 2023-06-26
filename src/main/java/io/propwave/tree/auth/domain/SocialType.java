@@ -12,4 +12,12 @@ public enum SocialType {
     ;
 
     private final String value;
+
+    public static SocialType getInstance(String key) {
+        if (TWITTER.value.equals(key)) {
+            return SocialType.TWITTER;
+        }
+
+        return SocialType.GOOGLE;
+    }
 }

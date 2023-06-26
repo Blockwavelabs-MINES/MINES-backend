@@ -1,4 +1,4 @@
-package io.propwave.tree.config.security;
+package io.propwave.tree.config.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
