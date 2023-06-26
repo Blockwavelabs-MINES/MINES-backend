@@ -2,7 +2,6 @@ package io.propwave.tree.config.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecurityException;
 import io.propwave.tree.config.security.model.JwtToken;
 import jakarta.xml.bind.DatatypeConverter;
 import lombok.extern.slf4j.Slf4j;
