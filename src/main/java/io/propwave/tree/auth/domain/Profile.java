@@ -19,10 +19,13 @@ public class Profile {
     @Column(nullable = false, length = 2083)
     private String profileImg;
 
-    @Column(nullable = false)
     private String profileName;
 
     protected static Profile of(String profileBio, String profileImg, String profileName) {
         return new Profile(profileBio, profileImg, profileName);
+    }
+
+    protected void updateProfileImg(String profileImg) {
+        this.profileImg = profileImg;
     }
 }

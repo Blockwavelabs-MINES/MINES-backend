@@ -28,4 +28,8 @@ public class SocialInformation {
     protected static SocialInformation of (String socialId, String email, SocialType socialType) {
         return new SocialInformation(socialId, email, socialType);
     }
+
+    protected void updateEmail(String email) {
+        this.email = email;
+    }
 }

@@ -48,4 +48,11 @@ public class User {
                 .role(role)
                 .build();
     }
+
+    public User update(String email, String profileImg) {
+        this.socialInformation.updateEmail(email);
+        this.profile.updateProfileImg(profileImg);
+
+        return this;
+    }
 }

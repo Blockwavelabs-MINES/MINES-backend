@@ -50,13 +50,13 @@ public class JwtTokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("authority", authorities)
-                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRED_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(ACCESS_TOKEN_EXPIRED_TIME)))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRED_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(REFRESH_TOKEN_EXPIRED_TIME)))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
@@ -103,5 +103,13 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException error) {
             return error.getClaims();
         }
+    }
+
+    public String getAccessHeaderKey() {
+        return "access_token";
+    }
+
+    public String getRefreshHeaderKey() {
+        return "refresh_token";
     }
 }
