@@ -2,7 +2,9 @@ package io.propwave.tree.config.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.propwave.tree.auth.domain.RefreshToken;
 import io.propwave.tree.auth.domain.Role;
+import io.propwave.tree.auth.infrastructure.RefreshTokenRepository;
 import io.propwave.tree.config.security.CustomUserDetailsService;
 import io.propwave.tree.config.security.model.JwtToken;
 import jakarta.xml.bind.DatatypeConverter;
@@ -31,14 +33,17 @@ public class JwtTokenProvider {
     private final Key key;
 
     private final CustomUserDetailsService userDetailsService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public JwtTokenProvider(
             @Value("${jwt.secret.key}") String jwtSecretKey,
-            CustomUserDetailsService customUserDetailsService
+            CustomUserDetailsService customUserDetailsService,
+            RefreshTokenRepository refreshTokenRepository
     ) {
         byte[] secretByteKey = DatatypeConverter.parseBase64Binary(jwtSecretKey);
         this.key = Keys.hmacShaKeyFor(secretByteKey);
         this.userDetailsService = customUserDetailsService;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     public JwtToken generateToken(String email, Role role) {
@@ -58,6 +63,8 @@ public class JwtTokenProvider {
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(REFRESH_TOKEN_EXPIRED_TIME)))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+
+        saveRefreshToken(refreshToken, email);
 
         return JwtToken.builder()
                 .grantType("Bearer")
@@ -94,11 +101,12 @@ public class JwtTokenProvider {
         }
     }
 
-    public String getAccessHeaderKey() {
-        return "access_token";
-    }
-
-    public String getRefreshHeaderKey() {
-        return "refresh_token";
+    private void saveRefreshToken(String refreshToken, String email) {
+        refreshTokenRepository.save(
+                RefreshToken.newInstance(
+                        refreshToken,
+                        email
+                )
+        );
     }
 }

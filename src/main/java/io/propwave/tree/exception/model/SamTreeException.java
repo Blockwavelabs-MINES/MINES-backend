@@ -7,9 +7,11 @@ import lombok.Getter;
 public class SamTreeException extends RuntimeException {
 
     private final Error error;
+    private final String message;
 
-    public SamTreeException(Error error) {
-        super(error.getMessage());
+    public SamTreeException(String message, Error error) {
+        super(message);
         this.error = error;
+        this.message = message;
     }
 }
