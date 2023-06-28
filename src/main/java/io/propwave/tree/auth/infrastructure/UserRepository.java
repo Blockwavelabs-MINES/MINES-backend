@@ -12,6 +12,6 @@ public interface UserRepository extends Repository<User, Long> {
     User save(User user);
 
     // READ
-    Optional<User> findBySocialInformationSocialId(String socialId);
+    Optional<User> findBySocialInformationEmail(String email);
 
 }

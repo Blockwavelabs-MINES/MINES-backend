@@ -5,9 +5,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -23,6 +26,10 @@ public class User {
 
     @Embedded
     private SocialInformation socialInformation;
+
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'ENG'")
+    private Language language;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
