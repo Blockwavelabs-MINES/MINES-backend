@@ -12,6 +12,9 @@ public enum Success {
     // auth
     LOGIN_SUCCESS(HttpStatus.OK, "로그인이 완료됐습니다."),
     TOKEN_REFRESH_SUCCESS(HttpStatus.OK, "토큰 재발급이 완료됐습니다."),
+
+    // user
+    CHECK_USER_ID_SUCCESS(HttpStatus.OK, "유저 아이디 중복 확인이 완료됐습니다."),
     ;
 
     private final HttpStatus code;
