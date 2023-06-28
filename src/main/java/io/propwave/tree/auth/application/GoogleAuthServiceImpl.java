@@ -10,9 +10,7 @@ import io.propwave.tree.external.client.dto.GoogleUserInfo;
 import io.propwave.tree.external.client.google.GoogleService;
 import io.propwave.tree.utils.SamTreeUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service

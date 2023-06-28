@@ -1,6 +1,5 @@
 package io.propwave.tree.auth.infrastructure;
 
-import io.propwave.tree.auth.domain.SocialType;
 import io.propwave.tree.auth.domain.User;
 import org.springframework.data.repository.Repository;
 
