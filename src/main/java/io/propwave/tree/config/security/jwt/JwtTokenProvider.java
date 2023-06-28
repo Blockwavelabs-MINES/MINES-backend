@@ -2,23 +2,19 @@ package io.propwave.tree.config.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.propwave.tree.auth.domain.Role;
+import io.propwave.tree.config.security.CustomUserDetailsService;
 import io.propwave.tree.config.security.model.JwtToken;
 import jakarta.xml.bind.DatatypeConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -34,22 +30,25 @@ public class JwtTokenProvider {
 
     private final Key key;
 
+    private final CustomUserDetailsService userDetailsService;
+
     public JwtTokenProvider(
-            @Value("${jwt.secret.key}") String jwtSecretKey
+            @Value("${jwt.secret.key}") String jwtSecretKey,
+            CustomUserDetailsService customUserDetailsService
     ) {
         byte[] secretByteKey = DatatypeConverter.parseBase64Binary(jwtSecretKey);
         this.key = Keys.hmacShaKeyFor(secretByteKey);
+        this.userDetailsService = customUserDetailsService;
     }
 
-    public JwtToken generateToken(Authentication authentication) {
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+    public JwtToken generateToken(String email, Role role) {
+
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("authority", role.getKey());
 
         // Access Token 생성
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim("authority", authorities)
+                .setClaims(claims)
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(ACCESS_TOKEN_EXPIRED_TIME)))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -68,18 +67,8 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String accessToken) {
-        Claims claims = pareseClaims(accessToken);
-
-        if (claims.get("authority") == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
-        }
-
-        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("Authority").toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .toList();
-
-        UserDetails principle = new User(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principle, "", authorities);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(pareseClaims(accessToken).getSubject());
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // 토큰 검증

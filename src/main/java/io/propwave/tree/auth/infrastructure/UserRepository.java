@@ -1,6 +1,5 @@
 package io.propwave.tree.auth.infrastructure;
 
-import io.propwave.tree.auth.domain.SocialType;
 import io.propwave.tree.auth.domain.User;
 import org.springframework.data.repository.Repository;
 
@@ -12,6 +11,6 @@ public interface UserRepository extends Repository<User, Long> {
     User save(User user);
 
     // READ
-    Optional<User> findBySocialInformationSocialId(String socialId);
+    Optional<User> findBySocialInformationEmail(String email);
 
 }
