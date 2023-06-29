@@ -24,12 +24,12 @@ public record CustomUserDetails(User user) implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getSocialInformation().getEmail();
+        return user.getSocialInformation().getSocialId();
     }
 
     @Override
     public String getUsername() {
-        return user.getSocialInformation().getSocialId();
+        return user.getSocialInformation().getEmail();
     }
 
     @Override

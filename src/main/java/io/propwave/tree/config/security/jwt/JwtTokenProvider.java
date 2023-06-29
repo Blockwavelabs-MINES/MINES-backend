@@ -4,9 +4,12 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.propwave.tree.auth.domain.RefreshToken;
 import io.propwave.tree.auth.domain.Role;
+import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.infrastructure.RefreshTokenRepository;
+import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.config.security.CustomUserDetailsService;
 import io.propwave.tree.config.security.model.JwtToken;
+import io.propwave.tree.exception.model.NotFoundException;
 import jakarta.xml.bind.DatatypeConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,17 +36,20 @@ public class JwtTokenProvider {
     private final Key key;
 
     private final CustomUserDetailsService userDetailsService;
+    private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
     public JwtTokenProvider(
             @Value("${jwt.secret.key}") String jwtSecretKey,
             CustomUserDetailsService customUserDetailsService,
-            RefreshTokenRepository refreshTokenRepository
+            RefreshTokenRepository refreshTokenRepository,
+            UserRepository userRepository
     ) {
         byte[] secretByteKey = DatatypeConverter.parseBase64Binary(jwtSecretKey);
         this.key = Keys.hmacShaKeyFor(secretByteKey);
         this.userDetailsService = customUserDetailsService;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.userRepository = userRepository;
     }
 
     public JwtToken generateToken(String email, Role role) {
@@ -75,7 +81,9 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String accessToken) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(pareseClaims(accessToken).getSubject());
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        User user = userRepository.findBySocialInformationEmail(userDetails.getUsername())
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        return new UsernamePasswordAuthenticationToken(user, "", userDetails.getAuthorities());
     }
 
     // 토큰 검증

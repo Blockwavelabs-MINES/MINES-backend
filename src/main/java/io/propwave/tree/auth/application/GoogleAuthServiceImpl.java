@@ -1,9 +1,9 @@
 package io.propwave.tree.auth.application;
 
+import io.propwave.tree.auth.application.dto.response.LoginResponseService;
 import io.propwave.tree.auth.domain.Role;
 import io.propwave.tree.auth.domain.SocialType;
 import io.propwave.tree.auth.domain.User;
-import io.propwave.tree.auth.infrastructure.RefreshTokenRepository;
 import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.config.security.jwt.JwtTokenProvider;
 import io.propwave.tree.config.security.model.JwtToken;
@@ -12,6 +12,7 @@ import io.propwave.tree.external.client.google.GoogleService;
 import io.propwave.tree.utils.SamTreeUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,26 +22,33 @@ public class GoogleAuthServiceImpl extends AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
-    public User login(String code) {
+    @Transactional
+    public LoginResponseService login(String code) {
         GoogleUserInfo googleUserInfo = googleService.getUserInfo(code);
+        boolean isSignup = !userRepository.existsBySocialInformationEmail(googleUserInfo.getEmail());
 
-        return userRepository.findBySocialInformationEmail(googleUserInfo.getEmail())
+        User user = userRepository.findBySocialInformationEmail(googleUserInfo.getEmail())
                 .orElseGet(() -> userRepository.save(User.newInstance(
                         SamTreeUtil.makeUserIdByEmail(googleUserInfo.getEmail()),
                         SamTreeUtil.makeUserIdByEmail(googleUserInfo.getEmail()) + "'s 3Tree page :)",
                         googleUserInfo.getPicture(),
-                        null,
+                        googleUserInfo.getName(),
                         googleUserInfo.getId(),
                         googleUserInfo.getEmail(),
                         SocialType.GOOGLE,
                         Role.USER
                 )));
+
+        return LoginResponseService.of(
+                user,
+                isSignup
+        );
     }
 
     @Override
+    @Transactional
     public JwtToken getAccessToken(String email, Role role) {
         return jwtTokenProvider.generateToken(email, role);
     }

@@ -1,7 +1,6 @@
 package io.propwave.tree.exception.advice;
 
 import feign.FeignException;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.propwave.tree.common.dto.ApiResponse;
 import io.propwave.tree.exception.Error;
 import io.propwave.tree.exception.model.SamTreeException;
@@ -42,14 +41,6 @@ public class ControllerExceptionAdvice {
     protected ResponseEntity<ApiResponse> handleFeignException(final FeignException error) {
         return new ResponseEntity<>(
                 ApiResponse.error(Error.SOCIAL_LOGIN_ERROR),
-                HttpStatus.UNAUTHORIZED
-        );
-    }
-
-    @ExceptionHandler(ExpiredJwtException.class)
-    protected ResponseEntity<ApiResponse> handleExpiredJwtException(final ExpiredJwtException error) {
-        return new ResponseEntity<>(
-                ApiResponse.error(Error.TOKEN_EXPIRED_ERROR),
                 HttpStatus.UNAUTHORIZED
         );
     }

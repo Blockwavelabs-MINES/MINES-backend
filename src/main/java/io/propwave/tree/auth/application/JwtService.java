@@ -10,6 +10,7 @@ import io.propwave.tree.exception.model.BadRequestException;
 import io.propwave.tree.exception.model.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class JwtService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    @Transactional
     public JwtToken getAccessTokenByRefreshToken(String refreshToken) {
         RefreshToken token = refreshTokenRepository.findById(refreshToken)
                 .orElseThrow(() -> new BadRequestException("재 로그인이 필요한 사용자입니다."));
