@@ -1,9 +1,11 @@
 package io.propwave.tree.auth.application;
 
 import io.propwave.tree.auth.application.dto.response.LoginResponseService;
+import io.propwave.tree.auth.domain.ProfileDecorate;
 import io.propwave.tree.auth.domain.Role;
 import io.propwave.tree.auth.domain.SocialType;
 import io.propwave.tree.auth.domain.User;
+import io.propwave.tree.auth.infrastructure.ProfileDecorateRepository;
 import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.config.security.jwt.JwtTokenProvider;
 import io.propwave.tree.config.security.model.JwtToken;
@@ -22,6 +24,7 @@ public class GoogleAuthServiceImpl extends AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     private final UserRepository userRepository;
+    private final ProfileDecorateRepository profileDecorateRepository;
 
     @Override
     @Transactional
@@ -40,6 +43,10 @@ public class GoogleAuthServiceImpl extends AuthService {
                         SocialType.GOOGLE,
                         Role.USER
                 )));
+
+        if (isSignup) {
+            profileDecorateRepository.save(ProfileDecorate.newInstance(user));
+        }
 
         return LoginResponseService.of(
                 user,
