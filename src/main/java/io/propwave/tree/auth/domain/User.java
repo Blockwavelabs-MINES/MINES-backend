@@ -7,10 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @DynamicInsert
+@Where(clause = "is_deleted = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -34,6 +36,10 @@ public class User {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private Boolean isDeleted;
 
     @OneToOne(mappedBy = "user")
     private ProfileDecorate profileDecorate;

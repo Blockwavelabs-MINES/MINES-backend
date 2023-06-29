@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -23,6 +24,8 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
         try {
             filterChain.doFilter(request, response);
+        } catch (UsernameNotFoundException e) {
+            setErrorResponse(response, Error.NOT_FOUND_EXCEPTION);
         } catch (ExpiredJwtException e) {
             // 토큰의 유효기간 만료
             setErrorResponse(response, Error.TOKEN_EXPIRED_ERROR);
