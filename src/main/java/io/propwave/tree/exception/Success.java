@@ -15,6 +15,7 @@ public enum Success {
 
     // user
     CHECK_USER_ID_SUCCESS(HttpStatus.OK, "유저 아이디 중복 확인이 완료됐습니다."),
+    UPDATE_USER_ID_SUCCESS(HttpStatus.OK, "유저 아이디 등록이 완료됐습니다."),
     ;
 
     private final HttpStatus code;

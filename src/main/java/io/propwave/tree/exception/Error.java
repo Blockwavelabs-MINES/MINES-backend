@@ -11,7 +11,9 @@ public enum Error {
 
     // custom
     BAD_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 요청입니다"),
+    UNAUTHORIZED_EXCEPTION(HttpStatus.UNAUTHORIZED, "인증되지 않은 요청입니다."),
     NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 자원입니다."),
+    CONFLICT_EXCEPTION(HttpStatus.CONFLICT, "중복되는 자원입니다"),
 
     // common
     MISSING_PARAMETER_ERROR(HttpStatus.BAD_REQUEST, "요청한 값이 존재하지 않습니다."),
@@ -21,6 +23,9 @@ public enum Error {
     // auth
     SOCIAL_LOGIN_ERROR(HttpStatus.UNAUTHORIZED, "인증할 수 없는 OAuth2.0 사용자압니다."),
     TOKEN_EXPIRED_ERROR(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
+    MALFORMED_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "잘못된 토큰 형식입니다."),
+    NULL_TOKE_ERROR(HttpStatus.UNAUTHORIZED, "토큰이 존재하지 않습니다."),
+    TOKEN_SIGNATURE_EXCEPTION(HttpStatus.UNAUTHORIZED, "변조된 토큰입니다."),
     ;
 
     private final HttpStatus code;

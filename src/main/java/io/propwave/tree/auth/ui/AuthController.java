@@ -3,11 +3,10 @@ package io.propwave.tree.auth.ui;
 import io.propwave.tree.auth.application.AuthService;
 import io.propwave.tree.auth.application.AuthServiceProvider;
 import io.propwave.tree.auth.application.JwtService;
-import io.propwave.tree.auth.domain.User;
+import io.propwave.tree.auth.application.dto.response.LoginResponseService;
 import io.propwave.tree.auth.ui.dto.request.LoginRequest;
 import io.propwave.tree.auth.ui.dto.response.LoginResponse;
 import io.propwave.tree.common.dto.ApiResponse;
-import io.propwave.tree.config.security.jwt.JwtTokenProvider;
 import io.propwave.tree.config.security.model.JwtToken;
 import io.propwave.tree.exception.Success;
 import jakarta.validation.Valid;
@@ -28,13 +27,13 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestParam("code") final String code, @RequestBody @Valid final LoginRequest request) {
         AuthService authService = authServiceProvider.getAuthService(request.getSocialType());
-        User user = authService.login(code);
+        LoginResponseService loginResponse = authService.login(code);
 
         return new ResponseEntity<>(
                 ApiResponse.success(Success.LOGIN_SUCCESS,
                         LoginResponse.of(
-                                authService.getAccessToken(user.getSocialInformation().getEmail(), user.getRole()),
-                                user.getProfile().getProfileName() == null
+                                authService.getAccessToken(loginResponse.getUser().getSocialInformation().getEmail(), loginResponse.getUser().getRole()),
+                                loginResponse.getIsSignup()
                         )
                 ),
                 HttpStatus.OK

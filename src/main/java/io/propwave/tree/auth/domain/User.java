@@ -56,10 +56,7 @@ public class User {
                 .build();
     }
 
-    public User update(String email, String profileImg) {
-        this.socialInformation.updateEmail(email);
-        this.profile.updateProfileImg(profileImg);
-
-        return this;
+    public void updateUserId(String userId) {
+        this.userId = userId;
     }
 }
