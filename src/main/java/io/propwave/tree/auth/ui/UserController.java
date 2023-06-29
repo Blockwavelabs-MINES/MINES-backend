@@ -6,6 +6,7 @@ import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.auth.ui.dto.request.ProfileUpdateRequest;
 import io.propwave.tree.auth.ui.dto.response.CheckUserIdResponse;
+import io.propwave.tree.auth.ui.dto.response.UserResponse;
 import io.propwave.tree.common.dto.ApiResponse;
 import io.propwave.tree.exception.Success;
 import io.propwave.tree.external.client.aws.S3Service;
@@ -49,5 +50,23 @@ public class UserController {
         String imageUrl = s3Service.uploadImage(request.getImage(), "profile");
         userService.updateProfile(user.getId(), UpdateProfileRequestServer.of(imageUrl, request.getProfileName(), request.getProfileBio()));
         return new ResponseEntity<>(ApiResponse.success(Success.UPDATE_PROFILE_SUCCESS), HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<ApiResponse<UserResponse>> getUerInformation(@AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(
+                ApiResponse.success(
+                        Success.GET_USER_INFORMATION_SUCCESS,
+                        UserResponse.of(
+                                user.getId(),
+                                user.getProfile().getProfileName(),
+                                user.getProfile().getProfileImg(),
+                                user.getProfile().getProfileBio(),
+                                user.getUserId(),
+                                user.getSocialInformation().getSocialId()
+                        )
+                ),
+                HttpStatus.OK
+        );
     }
 }

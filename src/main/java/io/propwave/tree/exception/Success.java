@@ -14,6 +14,7 @@ public enum Success {
     TOKEN_REFRESH_SUCCESS(HttpStatus.OK, "토큰 재발급이 완료됐습니다."),
 
     // user
+    GET_USER_INFORMATION_SUCCESS(HttpStatus.OK, "유저 정보 조회가 완료됐습니다."),
     CHECK_USER_ID_SUCCESS(HttpStatus.OK, "유저 아이디 중복 확인이 완료됐습니다."),
     UPDATE_USER_ID_SUCCESS(HttpStatus.OK, "유저 아이디 등록이 완료됐습니다."),
     UPDATE_PROFILE_SUCCESS(HttpStatus.OK, "유저 프로필 업데이트가 완료됐습니다."),
