@@ -62,4 +62,8 @@ public class User {
     public void updateUserId(String userId) {
         this.userId = userId;
     }
+
+    public void updateProfile(String profileBio, String profileImg, String profileName) {
+        this.profile = Profile.of(profileBio, profileImg, profileName);
+    }
 }
