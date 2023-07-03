@@ -46,4 +46,20 @@ public class LinkService {
 
         linkRepository.delete(link);
     }
+
+    @Transactional
+    public void updateLink(Long id, Long linkId, LinkRequest request) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        Link link = linkRepository.findById(linkId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 링크입니다."));
+
+        if (!link.getUser().equals(user)) {
+            throw new ForbiddenException("해당 링크에 권한이 없습니다.");
+        }
+
+        link.update(request.getLinkTitle(), request.getLinkUrl());
+    }
 }
