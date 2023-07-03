@@ -15,15 +15,16 @@ public class Link {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(nullable = false)
     private String linkTitle;
 
     @Column(nullable = false, length = 2083)
     private String linkUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @Builder
     private Link(String linkTitle, String linkUrl, User user) {
