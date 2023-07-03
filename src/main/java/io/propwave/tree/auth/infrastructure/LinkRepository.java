@@ -5,7 +5,7 @@ import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
 
-public interface LinkRepository extends Repository<Link, Long> {
+public interface LinkRepository extends Repository<Link, Long>, LinkRepositoryCustom {
 
     // CREATE
     void save(Link link);

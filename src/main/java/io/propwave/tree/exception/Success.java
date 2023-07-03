@@ -22,6 +22,7 @@ public enum Success {
 
     // link
     CREATE_LINK_SUCCESS(HttpStatus.CREATED, "링크 생성이 완료됐습니다."),
+    GET_LINK_LIST_SUCCESS(HttpStatus.OK, "링크 리스트 조회가 완료됐습니다."),
     UPDATE_LINK_SUCCESS(HttpStatus.OK, "링크 업데이트가 완료됐습니다."),
     DELETE_LINK_SUCCESS(HttpStatus.OK, "링크 삭제가 완료됐습니다,"),
     ;
