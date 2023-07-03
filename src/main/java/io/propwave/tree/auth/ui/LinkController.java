@@ -36,4 +36,17 @@ public class LinkController {
                 HttpStatus.OK
         );
     }
+
+    @PutMapping("/edit/{linkId}")
+    public ResponseEntity<ApiResponse> update(
+            @AuthenticationPrincipal User user,
+            @PathVariable String linkId,
+            @RequestBody @Valid final LinkRequest request
+    ) {
+        linkService.updateLink(user.getId(), Long.parseLong(linkId), request);
+        return new ResponseEntity<>(
+                ApiResponse.success(Success.UPDATE_LINK_SUCCESS),
+                HttpStatus.OK
+        );
+    }
 }

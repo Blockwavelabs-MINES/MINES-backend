@@ -36,4 +36,9 @@ public class Link {
     public static Link newInstance(String linkTitle, String linkUrl, User user) {
         return new Link(linkTitle, linkUrl, user);
     }
+
+    public void update(String linkTitle, String linkUrl) {
+        this.linkTitle = linkTitle;
+        this.linkUrl = linkUrl;
+    }
 }
