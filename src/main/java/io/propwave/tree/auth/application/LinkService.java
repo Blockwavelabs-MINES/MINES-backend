@@ -5,11 +5,15 @@ import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.infrastructure.LinkRepository;
 import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.auth.ui.dto.request.LinkRequest;
+import io.propwave.tree.auth.ui.dto.response.LinkResponse;
 import io.propwave.tree.exception.model.ForbiddenException;
 import io.propwave.tree.exception.model.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +33,19 @@ public class LinkService {
                 request.getLinkUrl(),
                 user
         ));
+    }
+
+    @Transactional
+    public List<LinkResponse> getList(Long id) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        List<Link> linkList = linkRepository.findAllByUserId(user.getId());
+
+        return linkList.stream()
+                .map(link -> LinkResponse.of(link.getId(), link.getLinkTitle(), link.getLinkUrl()))
+                .collect(Collectors.toList());
     }
 
     @Transactional

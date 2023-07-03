@@ -3,6 +3,7 @@ package io.propwave.tree.auth.ui;
 import io.propwave.tree.auth.application.LinkService;
 import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.ui.dto.request.LinkRequest;
+import io.propwave.tree.auth.ui.dto.response.LinkResponse;
 import io.propwave.tree.common.dto.ApiResponse;
 import io.propwave.tree.exception.Success;
 import jakarta.validation.Valid;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/link")
@@ -25,6 +28,17 @@ public class LinkController {
         return new ResponseEntity<>(
                 ApiResponse.success(Success.CREATE_LINK_SUCCESS),
                 HttpStatus.CREATED
+        );
+    }
+
+    @GetMapping("")
+    public ResponseEntity<ApiResponse<List<LinkResponse>>> getList(@AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(
+                ApiResponse.success(
+                        Success.GET_LINK_LIST_SUCCESS,
+                        linkService.getList(user.getId())
+                ),
+                HttpStatus.OK
         );
     }
 
