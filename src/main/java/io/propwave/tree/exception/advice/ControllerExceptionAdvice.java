@@ -6,6 +6,7 @@ import io.propwave.tree.exception.Error;
 import io.propwave.tree.exception.model.SamTreeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -19,6 +20,14 @@ public class ControllerExceptionAdvice {
     /**
      * 400
      */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    protected ResponseEntity<ApiResponse> handleHttpMessageNotReadableException(final HttpMessageNotReadableException error) {
+        return new ResponseEntity<>(
+                ApiResponse.error(Error.REQUEST_BODY_MISSING_ERROR),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     protected ResponseEntity<ApiResponse> handleMissingServletRequestParameterException(final MissingServletRequestParameterException error) {
         return new ResponseEntity<>(

@@ -19,6 +19,9 @@ public enum Success {
     UPDATE_USER_ID_SUCCESS(HttpStatus.OK, "유저 아이디 등록이 완료됐습니다."),
     UPDATE_PROFILE_SUCCESS(HttpStatus.OK, "유저 프로필 업데이트가 완료됐습니다."),
     UPDATE_LANGUAGE_SUCCESS(HttpStatus.OK, "유저 언어 업데이트가 완료됐습니다."),
+
+    // link
+    CREATE_LINK_SUCCESS(HttpStatus.CREATED, "링크 생성이 완료됐습니다."),
     ;
 
     private final HttpStatus code;

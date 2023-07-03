@@ -16,6 +16,7 @@ public enum Error {
     CONFLICT_EXCEPTION(HttpStatus.CONFLICT, "중복되는 자원입니다"),
 
     // common
+    REQUEST_BODY_MISSING_ERROR(HttpStatus.BAD_REQUEST, "요청 바디값이 존재하지 않습니다."),
     MISSING_PARAMETER_ERROR(HttpStatus.BAD_REQUEST, "요청한 값이 존재하지 않습니다."),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "요청 형식이 잘못됐습니다."),
     TYPE_MISSMATCH_ERROR(HttpStatus.BAD_REQUEST, "요청 타입이 잘못됐습니다."),

@@ -1,0 +1,33 @@
+package io.propwave.tree.auth.ui;
+
+import io.propwave.tree.auth.application.LinkService;
+import io.propwave.tree.auth.domain.User;
+import io.propwave.tree.auth.ui.dto.request.LinkRequest;
+import io.propwave.tree.common.dto.ApiResponse;
+import io.propwave.tree.exception.Success;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/link")
+@RequiredArgsConstructor
+public class LinkController {
+
+    private final LinkService linkService;
+
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse> create(@AuthenticationPrincipal User user, @RequestBody @Valid final LinkRequest request) {
+        linkService.createLink(user.getId(), request);
+        return new ResponseEntity<>(
+                ApiResponse.success(Success.CREATE_LINK_SUCCESS),
+                HttpStatus.CREATED
+        );
+    }
+}
