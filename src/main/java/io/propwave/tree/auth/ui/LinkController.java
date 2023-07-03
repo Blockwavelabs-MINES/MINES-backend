@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/link")
@@ -28,6 +25,15 @@ public class LinkController {
         return new ResponseEntity<>(
                 ApiResponse.success(Success.CREATE_LINK_SUCCESS),
                 HttpStatus.CREATED
+        );
+    }
+
+    @DeleteMapping("/{linkId}")
+    public ResponseEntity<ApiResponse> delete(@AuthenticationPrincipal User user, @PathVariable String linkId) {
+        linkService.deleteLink(user.getId(), Long.parseLong(linkId));
+        return new ResponseEntity<>(
+                ApiResponse.success(Success.DELETE_LINK_SUCCESS),
+                HttpStatus.OK
         );
     }
 }

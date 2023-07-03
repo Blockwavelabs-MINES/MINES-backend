@@ -5,6 +5,7 @@ import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.infrastructure.LinkRepository;
 import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.auth.ui.dto.request.LinkRequest;
+import io.propwave.tree.exception.model.ForbiddenException;
 import io.propwave.tree.exception.model.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,21 @@ public class LinkService {
                 request.getLinkUrl(),
                 user
         ));
+    }
+
+    @Transactional
+    public void deleteLink(Long id, Long linkId) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        Link link = linkRepository.findById(linkId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 링크입니다."));
+
+        if (!link.getUser().equals(user)) {
+            throw new ForbiddenException("해당 링크에 권한이 없습니다.");
+        }
+
+        linkRepository.delete(link);
     }
 }
