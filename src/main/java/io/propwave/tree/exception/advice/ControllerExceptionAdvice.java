@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class ControllerExceptionAdvice {
@@ -30,6 +31,14 @@ public class ControllerExceptionAdvice {
     protected ResponseEntity<ApiResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException error) {
         return new ResponseEntity<>(
                 ApiResponse.error(Error.VALIDATION_ERROR),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    protected ResponseEntity<ApiResponse> handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException error) {
+        return new ResponseEntity<>(
+                ApiResponse.error(Error.TYPE_MISSMATCH_ERROR),
                 HttpStatus.BAD_REQUEST
         );
     }
