@@ -2,6 +2,7 @@ package io.propwave.tree.auth.ui;
 
 import io.propwave.tree.auth.application.UserService;
 import io.propwave.tree.auth.application.dto.request.UpdateProfileRequestServer;
+import io.propwave.tree.auth.domain.Language;
 import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.auth.ui.dto.request.ProfileUpdateRequest;
@@ -11,6 +12,7 @@ import io.propwave.tree.common.dto.ApiResponse;
 import io.propwave.tree.exception.Success;
 import io.propwave.tree.external.client.aws.S3Service;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -68,5 +70,11 @@ public class UserController {
                 ),
                 HttpStatus.OK
         );
+    }
+
+    @PutMapping("/language")
+    public ResponseEntity<ApiResponse> updateLanguage(@AuthenticationPrincipal User user, @RequestParam Language language) {
+        userService.updateLanguage(user.getId(), language);
+        return new ResponseEntity<>(ApiResponse.success(Success.UPDATE_LANGUAGE_SUCCESS), HttpStatus.OK);
     }
 }

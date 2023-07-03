@@ -72,4 +72,8 @@ public class User {
     public void updateProfile(String profileBio, String profileImg, String profileName) {
         this.profile = Profile.of(profileBio, profileImg, profileName);
     }
+
+    public void updateLanguage(Language language) {
+        this.language = language;
+    }
 }
