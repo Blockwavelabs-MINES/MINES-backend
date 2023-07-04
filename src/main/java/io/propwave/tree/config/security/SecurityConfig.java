@@ -29,7 +29,8 @@ public class SecurityConfig {
                     .requestMatchers(toH2Console())
                     .requestMatchers("/auth/login")
                     .requestMatchers("/auth/refresh")
-                    .requestMatchers("/user/id/check");
+                    .requestMatchers("/user/id/check")
+                    .requestMatchers("/user/profile/decorate");
         };
     }
 

@@ -20,6 +20,9 @@ public enum Success {
     UPDATE_PROFILE_SUCCESS(HttpStatus.OK, "유저 프로필 업데이트가 완료됐습니다."),
     UPDATE_LANGUAGE_SUCCESS(HttpStatus.OK, "유저 언어 업데이트가 완료됐습니다."),
 
+    // decorate
+    GET_PROFILE_DECORATE_SUCCESS(HttpStatus.OK, "프로필 꾸미기 설정 조회가 완료됐습니다."),
+
     // link
     CREATE_LINK_SUCCESS(HttpStatus.CREATED, "링크 생성이 완료됐습니다."),
     GET_LINK_LIST_SUCCESS(HttpStatus.OK, "링크 리스트 조회가 완료됐습니다."),
