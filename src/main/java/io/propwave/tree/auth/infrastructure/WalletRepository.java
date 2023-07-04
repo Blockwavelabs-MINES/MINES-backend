@@ -11,9 +11,11 @@ public interface WalletRepository extends Repository<Wallet, Long> {
     void save(Wallet wallet);
 
     // READ
+    Optional<Wallet> findById(Long id);
     boolean existsByWalletAddress(String walletAddress);
 
     // UPDATE
 
     // DELETE
+    void delete(Wallet wallet);
 }

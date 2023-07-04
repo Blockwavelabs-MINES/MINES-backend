@@ -18,7 +18,7 @@ public class ProfileDecorate {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
 
     @Enumerated(EnumType.STRING)

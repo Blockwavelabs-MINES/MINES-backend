@@ -6,6 +6,7 @@ import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.auth.infrastructure.WalletRepository;
 import io.propwave.tree.auth.ui.dto.request.WalletRequest;
 import io.propwave.tree.exception.model.ConflictException;
+import io.propwave.tree.exception.model.ForbiddenException;
 import io.propwave.tree.exception.model.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,21 @@ public class WalletService {
                 walletRequest.getWalletAddress(),
                 walletRequest.getWalletType()
         ));
+    }
+
+    @Transactional
+    public void deleteWallet(Long id, Long walletId) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        Wallet wallet = walletRepository.findById(walletId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 지갑입니다."));
+
+        if (!wallet.getUser().equals(user)) {
+            throw new ForbiddenException("해당 지갑에 권한이 없습니다.");
+        }
+
+        walletRepository.delete(wallet);
     }
 }
