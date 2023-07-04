@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +25,15 @@ public class WalletController {
         return new ResponseEntity<>(
                 ApiResponse.success(Success.REGISTER_WALLET_SUCCESS),
                 HttpStatus.CREATED
+        );
+    }
+
+    @DeleteMapping("/{walletId}")
+    public ResponseEntity<ApiResponse> delete(@AuthenticationPrincipal User user, @PathVariable final String walletId) {
+        walletService.deleteWallet(user.getId(), Long.parseLong(walletId));
+        return new ResponseEntity<>(
+                ApiResponse.success(Success.DELETE_WALLET_SUCCESS),
+                HttpStatus.OK
         );
     }
 }
