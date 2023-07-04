@@ -25,6 +25,9 @@ public enum Success {
     GET_LINK_LIST_SUCCESS(HttpStatus.OK, "링크 리스트 조회가 완료됐습니다."),
     UPDATE_LINK_SUCCESS(HttpStatus.OK, "링크 업데이트가 완료됐습니다."),
     DELETE_LINK_SUCCESS(HttpStatus.OK, "링크 삭제가 완료됐습니다,"),
+
+    // wallet
+    REGISTER_WALLET_SUCCESS(HttpStatus.CREATED, "지갑 등록이 완료됐습니다."),
     ;
 
     private final HttpStatus code;

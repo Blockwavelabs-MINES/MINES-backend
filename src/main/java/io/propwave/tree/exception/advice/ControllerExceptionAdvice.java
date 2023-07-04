@@ -23,7 +23,7 @@ public class ControllerExceptionAdvice {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<ApiResponse> handleHttpMessageNotReadableException(final HttpMessageNotReadableException error) {
         return new ResponseEntity<>(
-                ApiResponse.error(Error.REQUEST_BODY_MISSING_ERROR),
+                ApiResponse.error(Error.JSON_PARSING_ERROR),
                 HttpStatus.BAD_REQUEST
         );
     }
