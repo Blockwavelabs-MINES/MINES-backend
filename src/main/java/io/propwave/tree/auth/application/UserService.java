@@ -1,6 +1,6 @@
 package io.propwave.tree.auth.application;
 
-import io.propwave.tree.auth.application.dto.request.UpdateProfileRequestServer;
+import io.propwave.tree.auth.application.dto.request.UpdateProfileRequestService;
 import io.propwave.tree.auth.domain.Language;
 import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.infrastructure.UserRepository;
@@ -33,7 +33,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateProfile(Long id, UpdateProfileRequestServer request) {
+    public void updateProfile(Long id, UpdateProfileRequestService request) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));

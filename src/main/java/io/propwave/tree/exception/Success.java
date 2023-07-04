@@ -22,6 +22,7 @@ public enum Success {
 
     // decorate
     GET_PROFILE_DECORATE_SUCCESS(HttpStatus.OK, "프로필 꾸미기 설정 조회가 완료됐습니다."),
+    UPDATE_PROFILE_DECORATE_SUCCESS(HttpStatus.OK, "프로필 꾸미기 업데이가 완료됐습니다."),
 
     // link
     CREATE_LINK_SUCCESS(HttpStatus.CREATED, "링크 생성이 완료됐습니다."),
