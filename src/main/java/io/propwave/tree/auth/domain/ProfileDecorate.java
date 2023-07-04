@@ -27,7 +27,6 @@ public class ProfileDecorate {
     private BackgroundType backgroundType;
 
     @ColumnDefault("'#ffffff'")
-    @Column(nullable = false)
     private String backgroundColor;
 
     private String backgroundImg;
@@ -50,5 +49,14 @@ public class ProfileDecorate {
 
     public static ProfileDecorate newInstance(User user) {
         return new ProfileDecorate(user);
+    }
+
+    public void update(BackgroundType backgroundType, String backgroundColor, String backgroundImg, String buttonColor, String buttonFontColor, String fontColor) {
+        this.backgroundType = backgroundType;
+        this.backgroundColor = backgroundColor;
+        this.backgroundImg = backgroundImg;
+        this.buttonColor = buttonColor;
+        this.buttonFontColor = buttonFontColor;
+        this.fontColor = fontColor;
     }
 }
