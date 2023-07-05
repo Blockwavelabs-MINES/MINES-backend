@@ -41,9 +41,6 @@ public class User {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
-    @OneToOne(mappedBy = "user")
-    private ProfileDecorate profileDecorate;
-
     @Builder
     private User(String userId, String profileBio, String profileImg, String profileName, String socialId, String email, SocialType socialType, Role role) {
         this.userId = userId;
