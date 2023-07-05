@@ -13,8 +13,8 @@ public interface SocialUserRepository extends Repository<SocialUser, Long> {
     void save(SocialUser socialUser);
 
     // READ
-    Optional<SocialUser> findByUserAndSocialTypeAndIsConnected(User user, SocialType socialType, Boolean isConnected);
-    boolean existsBySocialIdAndSocialTypeAndIsConnected(String socialId, SocialType socialType, Boolean isConnected);
+    Optional<SocialUser> findByUserAndSocialType(User user, SocialType socialType);
+    boolean existsBySocialIdAndSocialType(String socialId, SocialType socialType);
 
     // UPDATE
 

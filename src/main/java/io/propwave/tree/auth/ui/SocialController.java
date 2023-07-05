@@ -6,8 +6,10 @@ import io.propwave.tree.auth.application.dto.response.SocialLoginResponseService
 import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.ui.dto.request.DisconnectRequest;
 import io.propwave.tree.auth.ui.dto.request.LoginRequest;
+import io.propwave.tree.auth.ui.dto.request.RefreshRequest;
 import io.propwave.tree.common.dto.ApiResponse;
 import io.propwave.tree.exception.Success;
+import io.propwave.tree.external.client.dto.OAuth2Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,19 @@ public class SocialController {
         socialService.disconnect(user.getId(), request.getSocialType());
         return new ResponseEntity<>(
                 ApiResponse.success(Success.DISCONNECT_SUCCESS),
+                HttpStatus.OK
+        );
+    }
+
+    @PutMapping("/refresh")
+    public ResponseEntity<ApiResponse<OAuth2Token>> refresh(@AuthenticationPrincipal User user, @RequestBody final RefreshRequest request) {
+
+        SocialService socialService = socialServiceProvider.getSocialService(request.getSocialType());
+        return new ResponseEntity<>(
+                ApiResponse.success(
+                        Success.REFRESH_SUCCESS,
+                        socialService.refresh(user.getId(), request.getSocialType())
+                ),
                 HttpStatus.OK
         );
     }
