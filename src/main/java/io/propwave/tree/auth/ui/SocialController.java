@@ -7,6 +7,7 @@ import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.ui.dto.request.DisconnectRequest;
 import io.propwave.tree.auth.ui.dto.request.LoginRequest;
 import io.propwave.tree.auth.ui.dto.request.RefreshRequest;
+import io.propwave.tree.auth.ui.dto.response.SocialAccountListResponse;
 import io.propwave.tree.common.dto.ApiResponse;
 import io.propwave.tree.exception.Success;
 import io.propwave.tree.external.client.dto.OAuth2Token;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/social")
@@ -23,6 +26,14 @@ public class SocialController {
 
     private final SocialService socialService;
     private final SocialServiceProvider socialServiceProvider;
+
+    @GetMapping("")
+    public ResponseEntity<ApiResponse<List<SocialAccountListResponse>>> getList(@AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(
+                ApiResponse.success(Success.GET_ACCOUNT_LIST_SUCCESS, socialService.getSocialAccountList(user.getId())),
+                HttpStatus.OK
+        );
+    }
 
     @PostMapping("connect")
     public ResponseEntity<ApiResponse<SocialLoginResponseService>> connect(

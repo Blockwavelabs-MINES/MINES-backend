@@ -14,7 +14,8 @@ public enum Success {
     TOKEN_REFRESH_SUCCESS(HttpStatus.OK, "토큰 재발급이 완료됐습니다."),
 
     // social
-    CONNECT_SUCCESS(HttpStatus.OK, "소셜 계정 연동이 완료됐습니다,"),
+    GET_ACCOUNT_LIST_SUCCESS(HttpStatus.OK, "소셜 계정 전체 조회를 완료했습니다."),
+    CONNECT_SUCCESS(HttpStatus.OK, "소셜 계정 연동이 완료됐습니다."),
     DISCONNECT_SUCCESS(HttpStatus.OK, "소셜 계정 연동 해제가 완료됐습니다."),
     REFRESH_SUCCESS(HttpStatus.OK, "소셜 계정 OAuth2.0 토큰 갱신이 완료됐습니다."),
 
