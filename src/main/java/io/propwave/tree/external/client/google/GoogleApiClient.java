@@ -1,6 +1,6 @@
 package io.propwave.tree.external.client.google;
 
-import io.propwave.tree.external.client.dto.GoogleUserInfo;
+import io.propwave.tree.external.client.dto.google.GoogleUserInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
