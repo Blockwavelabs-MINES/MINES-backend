@@ -4,6 +4,7 @@ import io.propwave.tree.auth.application.SocialService;
 import io.propwave.tree.auth.application.SocialServiceProvider;
 import io.propwave.tree.auth.application.dto.response.SocialLoginResponseService;
 import io.propwave.tree.auth.domain.User;
+import io.propwave.tree.auth.ui.dto.request.DisconnectRequest;
 import io.propwave.tree.auth.ui.dto.request.LoginRequest;
 import io.propwave.tree.common.dto.ApiResponse;
 import io.propwave.tree.exception.Success;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/social")
 public class SocialController {
 
+    private final SocialService socialService;
     private final SocialServiceProvider socialServiceProvider;
 
     @PostMapping("connect")
@@ -30,6 +32,16 @@ public class SocialController {
         return new ResponseEntity<>(
                 ApiResponse.success(Success.CONNECT_SUCCESS, socialService.connect(user.getId(), code)),
                 HttpStatus.CREATED
+        );
+    }
+
+    @PutMapping("disconnect")
+    public ResponseEntity<ApiResponse> disconnect(@AuthenticationPrincipal User user, @RequestBody final DisconnectRequest request) {
+
+        socialService.disconnect(user.getId(), request.getSocialType());
+        return new ResponseEntity<>(
+                ApiResponse.success(Success.DISCONNECT_SUCCESS),
+                HttpStatus.OK
         );
     }
 }
