@@ -1,5 +1,6 @@
 package io.propwave.tree.external.client.twitter;
 
+import io.propwave.tree.external.client.dto.OAuth2Token;
 import io.propwave.tree.external.client.dto.twitter.TwitterOAuth2Token;
 import io.propwave.tree.external.client.dto.twitter.TwitterUser;
 import io.propwave.tree.external.client.dto.twitter.TwitterUserData;
@@ -43,6 +44,14 @@ public class TwitterService {
                 twitterUserData.getUsername(),
                 twitterOAuth2Token.getAccessToken(),
                 twitterOAuth2Token.getRefreshToken()
+        );
+    }
+
+    public OAuth2Token getTokenByRefreshToken(String refreshToken) {
+        return twitterApiClient.getAccessTokenByRefreshToken(
+                makeBearerToken(),
+                "refresh_token",
+                refreshToken
         );
     }
 

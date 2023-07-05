@@ -35,21 +35,22 @@ public class SocialUser {
     @Column(nullable = false)
     private String refreshToken;
 
-    @Column(nullable = false)
-    private Boolean isConnected;
-
     @Builder
-    private SocialUser(User user, String socialId, SocialType socialType, String username, String accessToken, String refreshToken, Boolean isConnected) {
+    private SocialUser(User user, String socialId, SocialType socialType, String username, String accessToken, String refreshToken) {
         this.user = user;
         this.socialId = socialId;
         this.socialType = socialType;
         this.username = username;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-        this.isConnected = isConnected;
     }
 
     public static SocialUser newInstance(User user, String socialId, SocialType socialType, String username, String accessToken, String refreshToken, Boolean isConnected) {
-        return new SocialUser(user, socialId, socialType, username, accessToken, refreshToken, isConnected);
+        return new SocialUser(user, socialId, socialType, username, accessToken, refreshToken);
+    }
+
+    public void refreshOAuth2Token(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 }

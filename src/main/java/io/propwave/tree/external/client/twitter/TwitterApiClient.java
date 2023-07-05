@@ -1,5 +1,6 @@
 package io.propwave.tree.external.client.twitter;
 
+import io.propwave.tree.external.client.dto.OAuth2Token;
 import io.propwave.tree.external.client.dto.twitter.TwitterOAuth2Token;
 import io.propwave.tree.external.client.dto.twitter.TwitterUserInfo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -25,5 +26,12 @@ public interface TwitterApiClient {
     @GetMapping(value = "/2/users/me")
     TwitterUserInfo getUserProfile(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String bearerToken
+    );
+
+    @PostMapping(value = "/2/oauth2/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    OAuth2Token getAccessTokenByRefreshToken(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String bearerToken,
+            @RequestParam("grant_type") String grantType,
+            @RequestParam("refresh_token") String refreshToken
     );
 }
