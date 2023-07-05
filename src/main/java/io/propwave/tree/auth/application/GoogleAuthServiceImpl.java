@@ -9,7 +9,7 @@ import io.propwave.tree.auth.infrastructure.ProfileDecorateRepository;
 import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.config.security.jwt.JwtTokenProvider;
 import io.propwave.tree.config.security.model.JwtToken;
-import io.propwave.tree.external.client.dto.GoogleUserInfo;
+import io.propwave.tree.external.client.dto.google.GoogleUserInfo;
 import io.propwave.tree.external.client.google.GoogleService;
 import io.propwave.tree.utils.SamTreeUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class GoogleAuthServiceImpl extends AuthService {
 
     private final GoogleService googleService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     private final UserRepository userRepository;
     private final ProfileDecorateRepository profileDecorateRepository;
@@ -52,11 +51,5 @@ public class GoogleAuthServiceImpl extends AuthService {
                 user,
                 isSignup
         );
-    }
-
-    @Override
-    @Transactional
-    public JwtToken getAccessToken(String email, Role role) {
-        return jwtTokenProvider.generateToken(email, role);
     }
 }

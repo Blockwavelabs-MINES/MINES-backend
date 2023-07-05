@@ -1,0 +1,35 @@
+package io.propwave.tree.auth.ui;
+
+import io.propwave.tree.auth.application.SocialService;
+import io.propwave.tree.auth.application.SocialServiceProvider;
+import io.propwave.tree.auth.application.dto.response.SocialLoginResponseService;
+import io.propwave.tree.auth.domain.User;
+import io.propwave.tree.auth.ui.dto.request.LoginRequest;
+import io.propwave.tree.common.dto.ApiResponse;
+import io.propwave.tree.exception.Success;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/social")
+public class SocialController {
+
+    private final SocialServiceProvider socialServiceProvider;
+
+    @PostMapping("connect")
+    public ResponseEntity<ApiResponse<SocialLoginResponseService>> connect(
+            @AuthenticationPrincipal User user,
+            @RequestParam("code") final String code,
+            @RequestBody final LoginRequest request
+    ) {
+        SocialService socialService = socialServiceProvider.getSocialService(request.getSocialType());
+        return new ResponseEntity<>(
+                ApiResponse.success(Success.CONNECT_SUCCESS, socialService.connect(user.getId(), code)),
+                HttpStatus.CREATED
+        );
+    }
+}

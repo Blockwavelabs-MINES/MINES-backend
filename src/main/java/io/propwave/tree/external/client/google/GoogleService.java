@@ -1,6 +1,6 @@
 package io.propwave.tree.external.client.google;
 
-import io.propwave.tree.external.client.dto.GoogleUserInfo;
+import io.propwave.tree.external.client.dto.google.GoogleUserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

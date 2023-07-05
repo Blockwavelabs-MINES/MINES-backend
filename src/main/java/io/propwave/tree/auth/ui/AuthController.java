@@ -7,6 +7,7 @@ import io.propwave.tree.auth.application.dto.response.LoginResponseService;
 import io.propwave.tree.auth.ui.dto.request.LoginRequest;
 import io.propwave.tree.auth.ui.dto.response.LoginResponse;
 import io.propwave.tree.common.dto.ApiResponse;
+import io.propwave.tree.config.security.jwt.JwtTokenProvider;
 import io.propwave.tree.config.security.model.JwtToken;
 import io.propwave.tree.exception.Success;
 import jakarta.validation.Valid;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthServiceProvider authServiceProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
     private final JwtService jwtService;
 
@@ -32,7 +34,7 @@ public class AuthController {
         return new ResponseEntity<>(
                 ApiResponse.success(Success.LOGIN_SUCCESS,
                         LoginResponse.of(
-                                authService.getAccessToken(loginResponse.getUser().getSocialInformation().getEmail(), loginResponse.getUser().getRole()),
+                                jwtTokenProvider.generateToken(loginResponse.getUser().getSocialInformation().getEmail(), loginResponse.getUser().getRole()),
                                 loginResponse.getIsSignup()
                         )
                 ),

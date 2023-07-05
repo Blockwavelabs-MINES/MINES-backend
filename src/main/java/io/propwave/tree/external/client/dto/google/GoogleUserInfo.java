@@ -1,4 +1,4 @@
-package io.propwave.tree.external.client.dto;
+package io.propwave.tree.external.client.dto.google;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

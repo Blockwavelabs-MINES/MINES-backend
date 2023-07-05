@@ -24,7 +24,7 @@ public enum Error {
     METHOD_NOT_ALLOWED_ERROR(HttpStatus.METHOD_NOT_ALLOWED, "허용되지 않은 HTTP Method 입니다."),
 
     // auth
-    SOCIAL_LOGIN_ERROR(HttpStatus.UNAUTHORIZED, "인증할 수 없는 OAuth2.0 사용자압니다."),
+    SOCIAL_LOGIN_ERROR(HttpStatus.UNAUTHORIZED, "인증할 수 없는 OAuth2.0 사용자입니다."),
     TOKEN_EXPIRED_ERROR(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
     MALFORMED_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "잘못된 토큰 형식입니다."),
     NULL_TOKE_ERROR(HttpStatus.UNAUTHORIZED, "토큰이 존재하지 않습니다."),

@@ -13,6 +13,9 @@ public enum Success {
     LOGIN_SUCCESS(HttpStatus.OK, "로그인이 완료됐습니다."),
     TOKEN_REFRESH_SUCCESS(HttpStatus.OK, "토큰 재발급이 완료됐습니다."),
 
+    // social
+    CONNECT_SUCCESS(HttpStatus.OK, "소셜 계정 연동이 완료됐습니다,"),
+
     // user
     GET_USER_INFORMATION_SUCCESS(HttpStatus.OK, "유저 정보 조회가 완료됐습니다."),
     CHECK_USER_ID_SUCCESS(HttpStatus.OK, "유저 아이디 중복 확인이 완료됐습니다."),
