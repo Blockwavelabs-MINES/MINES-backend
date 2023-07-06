@@ -27,6 +27,7 @@ public class SecurityConfig {
         return web -> {
             web.ignoring()
                     .requestMatchers(toH2Console())
+                    .requestMatchers("/profile")
                     .requestMatchers("/auth/login")
                     .requestMatchers("/auth/refresh")
                     .requestMatchers("/user/id/check")
