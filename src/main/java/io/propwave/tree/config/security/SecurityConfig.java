@@ -28,6 +28,7 @@ public class SecurityConfig {
             web.ignoring()
                     .requestMatchers(toH2Console())
                     .requestMatchers("/profile")
+                    .requestMatchers("/actuator/health")
                     .requestMatchers("/auth/login")
                     .requestMatchers("/auth/refresh")
                     .requestMatchers("/user/id/check")
