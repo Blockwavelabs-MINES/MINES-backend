@@ -10,6 +10,9 @@ name: Java CD with Gradle
 on:
   push:
     branches: [ "main" ]
+    
+env:
+  S3_BUCKET_NAME: 3tree-bucket
 
 permissions:
   contents: read
