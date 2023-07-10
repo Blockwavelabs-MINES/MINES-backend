@@ -54,7 +54,7 @@ sleep 10
 
 for retry_count in {1..10}
 do
-  response=$(curl -s http://localhost:$IDLE_PORT/actuator/health)
+  response=$(curl -s http://localhost:$IDLE_PORT/v1/actuator/health)
   up_count=$(echo $response | grep 'UP' | wc -l)
 
   if [ $up_count -ge 1 ]
