@@ -1,5 +1,6 @@
 package io.propwave.tree.config.security;
 
+import io.propwave.tree.config.security.cors.CorsConfig;
 import io.propwave.tree.config.security.jwt.JwtAuthenticationFilter;
 import io.propwave.tree.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final CorsConfig corsConfig;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -45,6 +47,9 @@ public class SecurityConfig {
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .cors(cors -> cors
+                        .configurationSource(corsConfig.corsConfigurationSource())
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
