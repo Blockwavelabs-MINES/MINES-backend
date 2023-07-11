@@ -13,6 +13,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @RestControllerAdvice
 public class ControllerExceptionAdvice {
@@ -60,6 +61,17 @@ public class ControllerExceptionAdvice {
         return new ResponseEntity<>(
                 ApiResponse.error(Error.SOCIAL_LOGIN_ERROR),
                 HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    /**
+     * 404
+     */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    protected ResponseEntity<ApiResponse> handleNoHandlerFoundException (final NoHandlerFoundException error) {
+        return new ResponseEntity<>(
+                ApiResponse.error(Error.NOT_FOUND_EXCEPTION),
+                HttpStatus.NOT_FOUND
         );
     }
 
