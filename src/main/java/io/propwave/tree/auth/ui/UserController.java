@@ -64,7 +64,8 @@ public class UserController {
                                 user.getProfile().getProfileImg(),
                                 user.getProfile().getProfileBio(),
                                 user.getUserId(),
-                                user.getSocialInformation().getSocialId()
+                                user.getSocialInformation().getSocialId(),
+                                user.getLanguage()
                         )
                 ),
                 HttpStatus.OK
