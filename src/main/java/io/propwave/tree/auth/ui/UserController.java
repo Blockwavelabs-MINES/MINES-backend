@@ -47,8 +47,7 @@ public class UserController {
 
     @PutMapping(value = "/user/profile/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse> updateProfile(@AuthenticationPrincipal User user, @ModelAttribute @Valid final ProfileUpdateRequest request) {
-        String imageUrl = s3Service.uploadImage(request.getImage(), "profile");
-        userService.updateProfile(user.getId(), UpdateProfileRequestService.of(imageUrl, request.getProfileName(), request.getProfileBio()));
+        userService.updateProfile(user.getId(), request.getImage(), UpdateProfileRequestService.of(request.getProfileName(), request.getProfileBio()));
         return new ResponseEntity<>(ApiResponse.success(Success.UPDATE_PROFILE_SUCCESS), HttpStatus.OK);
     }
 
