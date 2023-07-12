@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthServiceProvider authServiceProvider;
@@ -26,7 +25,7 @@ public class AuthController {
 
     private final JwtService jwtService;
 
-    @PostMapping("/login")
+    @PostMapping("/public/auth/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestParam("code") final String code, @RequestBody @Valid final LoginRequest request) {
         AuthService authService = authServiceProvider.getAuthService(request.getSocialType());
         LoginResponseService loginResponse = authService.login(code);
@@ -42,7 +41,7 @@ public class AuthController {
         );
     }
 
-    @GetMapping("/refresh")
+    @GetMapping("/public/auth/refresh")
     public ResponseEntity<ApiResponse<JwtToken>> refresh(@RequestHeader("refresh_token") final String refreshToken) {
         return new ResponseEntity<>(
                 ApiResponse.success(Success.TOKEN_REFRESH_SUCCESS, jwtService.getAccessTokenByRefreshToken(refreshToken)),

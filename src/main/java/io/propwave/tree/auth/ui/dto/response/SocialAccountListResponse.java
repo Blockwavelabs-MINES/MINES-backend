@@ -11,9 +11,9 @@ import lombok.*;
 public class SocialAccountListResponse {
 
     private SocialType socialType;
-    private String socialId;
+    private String username;
 
-    public static SocialAccountListResponse of(SocialType socialType, String socialId) {
-        return new SocialAccountListResponse(socialType, socialId);
+    public static SocialAccountListResponse of(SocialType socialType, String username) {
+        return new SocialAccountListResponse(socialType, username);
     }
 }

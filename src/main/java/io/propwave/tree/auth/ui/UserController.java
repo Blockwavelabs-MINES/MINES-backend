@@ -20,7 +20,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -29,7 +28,7 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-    @GetMapping("/id/check")
+    @GetMapping("/public/user/id/check")
     public ResponseEntity<ApiResponse<CheckUserIdResponse>> checkUserId(@RequestParam("user_id") final String userId) {
         return new ResponseEntity<>(
                 ApiResponse.success(
@@ -40,20 +39,20 @@ public class UserController {
         );
     }
 
-    @PutMapping("/id/edit")
+    @PutMapping("/user/id/edit")
     public ResponseEntity<ApiResponse> updateUserId(@AuthenticationPrincipal User user, @RequestParam("user_id") final String userId) {
         userService.updateUserId(user.getId(), userId);
         return new ResponseEntity<>(ApiResponse.success(Success.UPDATE_USER_ID_SUCCESS), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/profile/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/user/profile/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse> updateProfile(@AuthenticationPrincipal User user, @ModelAttribute @Valid final ProfileUpdateRequest request) {
         String imageUrl = s3Service.uploadImage(request.getImage(), "profile");
         userService.updateProfile(user.getId(), UpdateProfileRequestService.of(imageUrl, request.getProfileName(), request.getProfileBio()));
         return new ResponseEntity<>(ApiResponse.success(Success.UPDATE_PROFILE_SUCCESS), HttpStatus.OK);
     }
 
-    @GetMapping("")
+    @GetMapping("/user")
     public ResponseEntity<ApiResponse<UserResponse>> getUerInformation(@AuthenticationPrincipal User user) {
         return new ResponseEntity<>(
                 ApiResponse.success(
@@ -64,7 +63,7 @@ public class UserController {
                                 user.getProfile().getProfileImg(),
                                 user.getProfile().getProfileBio(),
                                 user.getUserId(),
-                                user.getSocialInformation().getSocialId(),
+                                user.getSocialInformation().getEmail(),
                                 user.getLanguage()
                         )
                 ),
@@ -72,7 +71,7 @@ public class UserController {
         );
     }
 
-    @PutMapping("/language")
+    @PutMapping("/user/language")
     public ResponseEntity<ApiResponse> updateLanguage(@AuthenticationPrincipal User user, @RequestParam Language language) {
         userService.updateLanguage(user.getId(), language);
         return new ResponseEntity<>(ApiResponse.success(Success.UPDATE_LANGUAGE_SUCCESS), HttpStatus.OK);

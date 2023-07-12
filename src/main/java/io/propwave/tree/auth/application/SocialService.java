@@ -35,7 +35,7 @@ public abstract class SocialService {
         List<SocialUser> socialUserList = socialUserRepository.findAllByUser(user);
 
         return socialUserList.stream()
-                .map(socialUser -> SocialAccountListResponse.of(socialUser.getSocialType(), socialUser.getSocialId()))
+                .map(socialUser -> SocialAccountListResponse.of(socialUser.getSocialType(), socialUser.getUsername()))
                 .collect(Collectors.toList());
     }
 

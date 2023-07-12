@@ -14,10 +14,10 @@ public class UserResponse {
     private String profileImg;
     private String profileBio;
     private String userId;
-    private String socialId;
+    private String email;
     private Language language;
 
-    public static UserResponse of(Long id, String profileName, String profileImg, String profileBio, String userId, String socialId, Language language) {
-        return new UserResponse(id, profileName, profileImg, profileBio, userId, socialId, language);
+    public static UserResponse of(Long id, String profileName, String profileImg, String profileBio, String userId, String email, Language language) {
+        return new UserResponse(id, profileName, profileImg, profileBio, userId, email, language);
     }
 }

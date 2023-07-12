@@ -39,6 +39,7 @@ public enum Success {
     // wallet
     REGISTER_WALLET_SUCCESS(HttpStatus.CREATED, "지갑 등록이 완료됐습니다."),
     DELETE_WALLET_SUCCESS(HttpStatus.OK, "지갑 삭제가 완료됐습니다."),
+    GET_WALLET_LIST_SUCCESS(HttpStatus.OK, "지갑 전체 조회가 완료됐습니다."),
     ;
 
     private final HttpStatus code;

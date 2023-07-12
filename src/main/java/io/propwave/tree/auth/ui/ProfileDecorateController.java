@@ -19,7 +19,7 @@ public class ProfileDecorateController {
 
     private final ProfileDecorateService profileDecorateService;
 
-    @GetMapping("/user/profile/decorate")
+    @GetMapping("/public/user/profile/decorate")
     public ResponseEntity<ApiResponse<ProfileDecorateResponseService>> getProfileDecorate(@RequestParam("user_id") final String userId) {
         return new ResponseEntity<>(
                 ApiResponse.success(

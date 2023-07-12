@@ -16,13 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/link")
 @RequiredArgsConstructor
 public class LinkController {
 
     private final LinkService linkService;
 
-    @PostMapping("/add")
+    @PostMapping("/link/add")
     public ResponseEntity<ApiResponse> create(@AuthenticationPrincipal User user, @RequestBody @Valid final LinkRequest request) {
         linkService.createLink(user.getId(), request);
         return new ResponseEntity<>(
@@ -31,18 +30,18 @@ public class LinkController {
         );
     }
 
-    @GetMapping("")
-    public ResponseEntity<ApiResponse<List<LinkResponse>>> getList(@AuthenticationPrincipal User user) {
+    @GetMapping("/public/link")
+    public ResponseEntity<ApiResponse<List<LinkResponse>>> getList(@RequestParam("user_id") String userId) {
         return new ResponseEntity<>(
                 ApiResponse.success(
                         Success.GET_LINK_LIST_SUCCESS,
-                        linkService.getList(user.getId())
+                        linkService.getList(userId)
                 ),
                 HttpStatus.OK
         );
     }
 
-    @DeleteMapping("/{linkId}")
+    @DeleteMapping("/link/{linkId}")
     public ResponseEntity<ApiResponse> delete(@AuthenticationPrincipal User user, @PathVariable String linkId) {
         linkService.deleteLink(user.getId(), Long.parseLong(linkId));
         return new ResponseEntity<>(
@@ -51,7 +50,7 @@ public class LinkController {
         );
     }
 
-    @PutMapping("/edit/{linkId}")
+    @PutMapping("/link/edit/{linkId}")
     public ResponseEntity<ApiResponse> update(
             @AuthenticationPrincipal User user,
             @PathVariable String linkId,
