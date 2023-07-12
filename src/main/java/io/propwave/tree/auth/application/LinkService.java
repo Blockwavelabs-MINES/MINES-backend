@@ -36,9 +36,9 @@ public class LinkService {
     }
 
     @Transactional
-    public List<LinkResponse> getList(Long id) {
+    public List<LinkResponse> getList(String userId) {
 
-        User user = userRepository.findById(id)
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
         List<Link> linkList = linkRepository.findAllByUserId(user.getId());

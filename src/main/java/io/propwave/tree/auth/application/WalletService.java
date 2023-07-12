@@ -1,5 +1,6 @@
 package io.propwave.tree.auth.application;
 
+import io.propwave.tree.auth.application.dto.response.WalletResponseService;
 import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.domain.Wallet;
 import io.propwave.tree.auth.infrastructure.UserRepository;
@@ -12,12 +13,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class WalletService {
 
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
+
+    @Transactional
+    public List<WalletResponseService> getWalletList(String userId) {
+
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        List<Wallet> walletList = walletRepository.findAllByUserId(user.getId());
+        return walletList.stream()
+                .map(wallet -> WalletResponseService.of(wallet.getWalletAddress(), wallet.getWalletType()))
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public void registerWallet(Long id, WalletRequest walletRequest) {

@@ -21,13 +21,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/social")
 public class SocialController {
 
     private final SocialService socialService;
     private final SocialServiceProvider socialServiceProvider;
 
-    @GetMapping("")
+    @GetMapping("/social")
     public ResponseEntity<ApiResponse<List<SocialAccountListResponse>>> getList(@AuthenticationPrincipal User user) {
         return new ResponseEntity<>(
                 ApiResponse.success(Success.GET_ACCOUNT_LIST_SUCCESS, socialService.getSocialAccountList(user.getId())),
@@ -35,7 +34,7 @@ public class SocialController {
         );
     }
 
-    @PostMapping("connect")
+    @PostMapping("/social/connect")
     public ResponseEntity<ApiResponse<SocialLoginResponseService>> connect(
             @AuthenticationPrincipal User user,
             @RequestParam("code") final String code,
@@ -48,7 +47,7 @@ public class SocialController {
         );
     }
 
-    @PutMapping("disconnect")
+    @PutMapping("/social/disconnect")
     public ResponseEntity<ApiResponse> disconnect(@AuthenticationPrincipal User user, @RequestBody final DisconnectRequest request) {
 
         socialService.disconnect(user.getId(), request.getSocialType());
@@ -58,7 +57,7 @@ public class SocialController {
         );
     }
 
-    @PutMapping("/refresh")
+    @PutMapping("/social/refresh")
     public ResponseEntity<ApiResponse<OAuth2Token>> refresh(@AuthenticationPrincipal User user, @RequestBody final RefreshRequest request) {
 
         SocialService socialService = socialServiceProvider.getSocialService(request.getSocialType());
