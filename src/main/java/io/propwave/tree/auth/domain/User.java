@@ -66,8 +66,12 @@ public class User {
         this.userId = userId;
     }
 
-    public void updateProfile(String profileBio, String profileImg, String profileName) {
+    public void updateProfileWithImage(String profileBio, String profileImg, String profileName) {
         this.profile = Profile.of(profileBio, profileImg, profileName);
+    }
+
+    public void updateProfile(String profileBio, String profileName) {
+        this.profile = Profile.of(profileBio, this.profile.getProfileImg(), profileName);
     }
 
     public void updateLanguage(Language language) {

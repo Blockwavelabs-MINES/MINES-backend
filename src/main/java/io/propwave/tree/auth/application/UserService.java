@@ -10,6 +10,7 @@ import io.propwave.tree.external.client.aws.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -33,13 +34,21 @@ public class UserService {
     }
 
     @Transactional
-    public void updateProfile(Long id, UpdateProfileRequestService request) {
+    public void updateProfile(Long id, MultipartFile image, UpdateProfileRequestService request) {
+        String imageUrl;
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
-        s3Service.deleteFile(user.getProfile().getProfileImg());
-        user.updateProfile(request.getProfileBio(), request.getImage(), request.getProfileName());
+        // 프로필 이미지가 변경되는 경우
+        if (!image.isEmpty()) {
+            imageUrl = s3Service.uploadImage(image, "profile");
+            s3Service.deleteFile(user.getProfile().getProfileImg());
+
+            user.updateProfileWithImage(request.getProfileBio(), imageUrl, request.getProfileName());
+        }
+
+        user.updateProfile(request.getProfileBio(), request.getProfileName());
     }
 
     @Transactional

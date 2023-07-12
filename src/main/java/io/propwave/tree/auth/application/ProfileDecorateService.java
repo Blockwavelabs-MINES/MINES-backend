@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class ProfileDecorateService {
@@ -75,15 +77,15 @@ public class ProfileDecorateService {
     }
 
     private BackgroundType checkBackgroundType(String backgroundColor, MultipartFile backgroundImg) {
-        if (backgroundColor == null && backgroundImg == null) {
+        if (Objects.equals(backgroundColor, "") && backgroundImg.isEmpty()) {
             throw new BadRequestException("배경 색과 배경 이미지 모두 요청되지 않았습니다.");
         }
 
-        if (backgroundColor != null && backgroundImg != null) {
+        if (!Objects.equals(backgroundColor, "") && !backgroundImg.isEmpty()) {
             throw new BadRequestException("배경 색과 배경 이미지 모두 요청됐습니다.");
         }
 
-        if (backgroundImg != null) {
+        if (!backgroundImg.isEmpty()) {
             return BackgroundType.IMAGE;
         }
 
