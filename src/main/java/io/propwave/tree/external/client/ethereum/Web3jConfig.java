@@ -13,7 +13,7 @@ public class Web3jConfig {
     @Value("${block-chain.endpoint}")
     private String endpoint;
 
-    @Value(("${block-chain.metamask.private-key.office}"))
+    @Value("${block-chain.metamask.private-key.office}")
     private String privateKey;
 
     @Bean
