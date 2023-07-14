@@ -13,6 +13,7 @@ public interface WalletRepository extends Repository<Wallet, Long> {
 
     // READ
     Optional<Wallet> findById(Long id);
+    Optional<Wallet> findByWalletAddress(String walletAddress);
     List<Wallet> findAllByUserId(Long id);
     boolean existsByWalletAddress(String walletAddress);
 
