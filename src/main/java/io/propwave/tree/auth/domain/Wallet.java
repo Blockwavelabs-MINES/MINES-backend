@@ -36,4 +36,8 @@ public class Wallet {
     public static Wallet newInstance(User user, String walletAddress, WalletType walletType) {
         return new Wallet(user, walletAddress, walletType);
     }
+
+    public boolean isWalletOwner(User user) {
+        return this.user.equals(user);
+    }
 }
