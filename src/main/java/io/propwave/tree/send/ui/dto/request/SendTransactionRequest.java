@@ -1,5 +1,6 @@
 package io.propwave.tree.send.ui.dto.request;
 
+import io.propwave.tree.auth.domain.SocialType;
 import lombok.*;
 
 @ToString
@@ -9,8 +10,10 @@ import lombok.*;
 public class SendTransactionRequest {
 
     private String senderSocialName;
+    private SocialType senderSocialType;
     private String senderWalletAddress;
     private String receiverSocialName;
+    private SocialType receiverSocialType;
     private String tokenTicker;
     private Double tokenAmount;
     private String transactionHash;

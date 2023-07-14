@@ -42,6 +42,7 @@ public enum Success {
     GET_WALLET_LIST_SUCCESS(HttpStatus.OK, "지갑 전체 조회가 완료됐습니다."),
 
     // send
+    GET_SEND_INFORMATION_SUCCESS(HttpStatus.OK, "송금 정보 조회가 완료됐습니다."),
     CREATE_RECEIVE_LINK_SUCCESS(HttpStatus.CREATED, "토큰 수령 링크 생성이 완료됐습니다."),
 
     ;
