@@ -9,10 +9,11 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class WalletResponseService {
 
+    private Long walletId;
     private String walletAddress;
     private WalletType walletType;
 
-    public static WalletResponseService of(String walletAddress, WalletType walletType) {
-        return new WalletResponseService(walletAddress, walletType);
+    public static WalletResponseService of(Long walletId, String walletAddress, WalletType walletType) {
+        return new WalletResponseService(walletId, walletAddress, walletType);
     }
 }

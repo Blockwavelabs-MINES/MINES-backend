@@ -31,7 +31,7 @@ public class WalletService {
 
         List<Wallet> walletList = walletRepository.findAllByUserId(user.getId());
         return walletList.stream()
-                .map(wallet -> WalletResponseService.of(wallet.getWalletAddress(), wallet.getWalletType()))
+                .map(wallet -> WalletResponseService.of(wallet.getId(), wallet.getWalletAddress(), wallet.getWalletType()))
                 .collect(Collectors.toList());
     }
 
