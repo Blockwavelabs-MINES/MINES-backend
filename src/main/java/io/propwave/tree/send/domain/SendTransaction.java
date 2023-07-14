@@ -1,5 +1,6 @@
 package io.propwave.tree.send.domain;
 
+import io.propwave.tree.auth.domain.SocialType;
 import io.propwave.tree.auth.domain.SocialUser;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -19,11 +20,25 @@ public class SendTransaction {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_social_name")
+    @JoinColumn(name = "sender_social_id")
     private SocialUser socialUser;
 
     @Column(nullable = false)
+    private String senderSocialName;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SocialType senderSocialType;
+
+    @Column(nullable = false)
     private String senderWalletAddress;
+
+    @Column(nullable = false)
+    private String receiverSocialName;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SocialType receiverSocialType;
 
     @Column
     private String receiverWalletAddress;
@@ -45,8 +60,11 @@ public class SendTransaction {
 
     private SendTransaction(
             SocialUser socialUser,
+            String senderSocialName,
+            SocialType senderSocialType,
             String senderWalletAddress,
-            String receiverWalletAddress,
+            String receiverSocialName,
+            SocialType receiverSocialType,
             String tokenTicker,
             Double tokenAmount,
             String linkKey,
@@ -56,8 +74,11 @@ public class SendTransaction {
             LocalDateTime expiredAt
     ) {
         this.socialUser = socialUser;
+        this.senderSocialName = senderSocialName;
+        this.senderSocialType = senderSocialType;
         this.senderWalletAddress = senderWalletAddress;
-        this.receiverWalletAddress = receiverWalletAddress;
+        this.receiverSocialName = receiverSocialName;
+        this.receiverSocialType = receiverSocialType;
         this.tokenTicker = tokenTicker;
         this.tokenAmount = tokenAmount;
         this.receiveLinkInformation = ReceiveLinkInformation.of(linkKey);
@@ -67,8 +88,11 @@ public class SendTransaction {
 
     public static SendTransaction newInstance(
             SocialUser socialUser,
+            String senderSocialName,
+            SocialType senderSocialType,
             String senderWalletAddress,
-            String receiverWalletAddress,
+            String receiverSocialName,
+            SocialType receiverSocialType,
             String tokenTicker,
             Double tokenAmount,
             String linkKey,
@@ -77,6 +101,6 @@ public class SendTransaction {
             String networkId,
             LocalDateTime expiredAt
     ) {
-        return new SendTransaction(socialUser, senderWalletAddress, receiverWalletAddress, tokenTicker, tokenAmount, linkKey, transactionHash, tokenContractAddress, networkId, expiredAt);
+        return new SendTransaction(socialUser, senderSocialName, senderSocialType, senderWalletAddress, receiverSocialName, receiverSocialType, tokenTicker, tokenAmount, linkKey, transactionHash, tokenContractAddress, networkId, expiredAt);
     }
 }

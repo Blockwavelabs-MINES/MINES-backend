@@ -8,6 +8,7 @@ import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.auth.infrastructure.WalletRepository;
 import io.propwave.tree.exception.model.ForbiddenException;
 import io.propwave.tree.exception.model.NotFoundException;
+import io.propwave.tree.send.application.dto.response.SendInformationResponseService;
 import io.propwave.tree.send.application.dto.response.SendTransactionResponseService;
 import io.propwave.tree.send.domain.SendTransaction;
 import io.propwave.tree.send.infrastructure.SendTransactionRepository;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -42,15 +44,18 @@ public class SendService {
             throw new ForbiddenException("해당 지갑에 권한이 없습니다.");
         }
 
-        SocialUser socialUser = socialUserRepository.findByUserAndUsername(user, request.getSenderSocialName())
+        SocialUser senderSocialUser = socialUserRepository.findByUserAndUsername(user, request.getSenderSocialName())
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 소셜 유저입니다."));
 
         String linkKey = confirmTheOnlyLinkKey();
 
         SendTransaction sendTransaction = sendTransactionRepository.save(SendTransaction.newInstance(
-                socialUser,
+                senderSocialUser,
+                request.getSenderSocialName(),
+                request.getSenderSocialType(),
                 request.getSenderWalletAddress(),
-                null,
+                request.getReceiverSocialName(),
+                request.getReceiverSocialType(),
                 request.getTokenTicker(),
                 request.getTokenAmount(),
                 linkKey,
@@ -63,6 +68,19 @@ public class SendService {
         return SendTransactionResponseService.of(
                 sendTransaction.getReceiveLinkInformation().getLinkKey(),
                 sendTransaction.getExpiredAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        );
+    }
+
+    @Transactional
+    public SendInformationResponseService getSendInformation(String linkKey) {
+        SendTransaction sendTransaction = sendTransactionRepository.findByReceiveLinkInformationLinkKey(linkKey)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 거래의 링크키입니다."));
+
+        return SendInformationResponseService.of(
+                sendTransaction.getSenderSocialName(),
+                sendTransaction.getReceiveLinkInformation().getIsLinkValid(),
+                sendTransaction.getTokenTicker(),
+                BigDecimal.valueOf(sendTransaction.getTokenAmount()).toString()
         );
     }
 
