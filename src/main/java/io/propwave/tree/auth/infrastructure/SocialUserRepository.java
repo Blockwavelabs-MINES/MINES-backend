@@ -14,6 +14,7 @@ public interface SocialUserRepository extends Repository<SocialUser, Long> {
     void save(SocialUser socialUser);
 
     // READ
+    Optional<SocialUser> findByUserId(Long userId);
     Optional<SocialUser> findByUserAndSocialType(User user, SocialType socialType);
     Optional<SocialUser> findByUserAndUsername(User user, String username);
     boolean existsBySocialIdAndSocialType(String socialId, SocialType socialType);

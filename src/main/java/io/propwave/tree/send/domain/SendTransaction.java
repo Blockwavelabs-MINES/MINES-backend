@@ -2,6 +2,7 @@ package io.propwave.tree.send.domain;
 
 import io.propwave.tree.auth.domain.SocialType;
 import io.propwave.tree.auth.domain.SocialUser;
+import io.propwave.tree.auth.domain.WalletType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -34,6 +35,10 @@ public class SendTransaction {
     private String senderWalletAddress;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private WalletType senderWalletType;
+
+    @Column(nullable = false)
     private String receiverSocialName;
 
     @Column(nullable = false)
@@ -43,11 +48,15 @@ public class SendTransaction {
     @Column
     private String receiverWalletAddress;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private WalletType receiverWalletType;
+
     @Column(nullable = false)
     private String tokenTicker;
 
     @Column(nullable = false)
-    private Double tokenAmount;
+    private String tokenAmount;
 
     @Embedded
     private ReceiveLinkInformation receiveLinkInformation;
@@ -63,10 +72,11 @@ public class SendTransaction {
             String senderSocialName,
             SocialType senderSocialType,
             String senderWalletAddress,
+            WalletType senderWalletType,
             String receiverSocialName,
             SocialType receiverSocialType,
             String tokenTicker,
-            Double tokenAmount,
+            String tokenAmount,
             String linkKey,
             String transactionHash,
             String tokenContractAddress,
@@ -77,6 +87,7 @@ public class SendTransaction {
         this.senderSocialName = senderSocialName;
         this.senderSocialType = senderSocialType;
         this.senderWalletAddress = senderWalletAddress;
+        this.senderWalletType = senderWalletType;
         this.receiverSocialName = receiverSocialName;
         this.receiverSocialType = receiverSocialType;
         this.tokenTicker = tokenTicker;
@@ -91,16 +102,27 @@ public class SendTransaction {
             String senderSocialName,
             SocialType senderSocialType,
             String senderWalletAddress,
+            WalletType senderWalletType,
             String receiverSocialName,
             SocialType receiverSocialType,
             String tokenTicker,
-            Double tokenAmount,
+            String tokenAmount,
             String linkKey,
             String transactionHash,
             String tokenContractAddress,
             String networkId,
             LocalDateTime expiredAt
     ) {
-        return new SendTransaction(socialUser, senderSocialName, senderSocialType, senderWalletAddress, receiverSocialName, receiverSocialType, tokenTicker, tokenAmount, linkKey, transactionHash, tokenContractAddress, networkId, expiredAt);
+        return new SendTransaction(socialUser, senderSocialName, senderSocialType, senderWalletAddress, senderWalletType, receiverSocialName, receiverSocialType, tokenTicker, tokenAmount, linkKey, transactionHash, tokenContractAddress, networkId, expiredAt);
+    }
+
+    public void updateReceiverInformation(String receiverWalletAddress, WalletType receiverWalletType) {
+        this.receiverWalletAddress = receiverWalletAddress;
+        this.receiverWalletType = receiverWalletType;
+        this.receiveLinkInformation = ReceiveLinkInformation.completeTransaction();
+    }
+
+    public boolean isTransactionOwner(String receiverSocialName, SocialType receiverSocialType) {
+        return this.receiverSocialName.equals(receiverSocialName) && this.receiverSocialType.equals(receiverSocialType);
     }
 }
