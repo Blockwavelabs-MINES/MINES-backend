@@ -8,12 +8,13 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SendInformationResponseService {
 
+    private Long transactionId;
     private String senderUsername;
     private Boolean isValid;
     private String tokenTicker;
     private String tokenAmount;
 
-    public static SendInformationResponseService of(String senderUsername, Boolean isValid, String tokenTicker, String tokenAmount) {
-        return new SendInformationResponseService(senderUsername, isValid, tokenTicker, tokenAmount);
+    public static SendInformationResponseService of(Long transactionId, String senderUsername, Boolean isValid, String tokenTicker, String tokenAmount) {
+        return new SendInformationResponseService(transactionId, senderUsername, isValid, tokenTicker, tokenAmount);
     }
 }

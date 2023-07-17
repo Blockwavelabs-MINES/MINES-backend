@@ -44,7 +44,7 @@ public enum Success {
     // send
     GET_SEND_INFORMATION_SUCCESS(HttpStatus.OK, "송금 정보 조회가 완료됐습니다."),
     CREATE_RECEIVE_LINK_SUCCESS(HttpStatus.CREATED, "토큰 수령 링크 생성이 완료됐습니다."),
-
+    UPDATE_SEND_INFORMATION_SUCCESS(HttpStatus.OK, "수령자 정보 업데이트가 완료됐습니다."),
     ;
 
     private final HttpStatus code;

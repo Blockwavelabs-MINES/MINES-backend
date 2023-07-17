@@ -29,4 +29,8 @@ public class ReceiveLinkInformation {
     protected static ReceiveLinkInformation of(String linkKey) {
         return new ReceiveLinkInformation(linkKey);
     }
+
+    protected static ReceiveLinkInformation completeTransaction() {
+        return new ReceiveLinkInformation("", true, false);
+    }
 }

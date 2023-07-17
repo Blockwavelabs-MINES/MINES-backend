@@ -13,6 +13,7 @@ import io.propwave.tree.send.application.dto.response.SendTransactionResponseSer
 import io.propwave.tree.send.domain.SendTransaction;
 import io.propwave.tree.send.infrastructure.SendTransactionRepository;
 import io.propwave.tree.send.ui.dto.request.SendTransactionRequest;
+import io.propwave.tree.send.ui.dto.request.UpdateSendInformationRequest;
 import io.propwave.tree.utils.SamTreeUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,7 @@ public class SendService {
                 request.getSenderSocialName(),
                 request.getSenderSocialType(),
                 request.getSenderWalletAddress(),
+                request.getSenderWalletType(),
                 request.getReceiverSocialName(),
                 request.getReceiverSocialType(),
                 request.getTokenTicker(),
@@ -77,10 +79,11 @@ public class SendService {
                 .orElseThrow(() -> new NotFoundException("존재하지 않는 거래의 링크키입니다."));
 
         return SendInformationResponseService.of(
+                sendTransaction.getId(),
                 sendTransaction.getSenderSocialName(),
                 sendTransaction.getReceiveLinkInformation().getIsLinkValid(),
                 sendTransaction.getTokenTicker(),
-                BigDecimal.valueOf(sendTransaction.getTokenAmount()).toString()
+                sendTransaction.getTokenAmount()
         );
     }
 
@@ -92,5 +95,24 @@ public class SendService {
         } while (sendTransactionRepository.existsByReceiveLinkInformationLinkKey(linkKey));
 
         return linkKey;
+    }
+
+    @Transactional
+    public void updateSendInformation(Long id, Long transactionId, UpdateSendInformationRequest request) {
+        SocialUser receiver = socialUserRepository.findByUserId(id)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        if (!walletRepository.existsByWalletAddressAndWalletType(request.getReceiverWalletAddress(), request.getReceiverWalletType())) {
+            throw new NotFoundException("존재하지 않는 지갑입니다.");
+        }
+
+        SendTransaction sendTransaction = sendTransactionRepository.findById(transactionId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 거래입니다."));
+
+        if (!sendTransaction.isTransactionOwner(receiver.getUsername(), receiver.getSocialType())) {
+            throw new ForbiddenException("접근 권한이 없는 거래입니다.");
+        }
+
+        sendTransaction.updateReceiverInformation(request.getReceiverWalletAddress(), request.getReceiverWalletType());
     }
 }
