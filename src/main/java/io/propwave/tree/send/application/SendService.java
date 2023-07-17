@@ -81,6 +81,7 @@ public class SendService {
         return SendInformationResponseService.of(
                 sendTransaction.getId(),
                 sendTransaction.getSenderSocialName(),
+                sendTransaction.getReceiverSocialName(),
                 sendTransaction.getReceiveLinkInformation().getIsLinkValid(),
                 sendTransaction.getTokenTicker(),
                 sendTransaction.getTokenAmount()
