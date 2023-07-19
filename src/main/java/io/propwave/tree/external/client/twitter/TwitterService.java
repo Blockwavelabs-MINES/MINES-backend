@@ -28,12 +28,6 @@ public class TwitterService {
     @Value("${twitter.codeVerifier}")
     private String codeVerifier;
 
-    @Value("${twitter.sendImage}")
-    private String sendImage;
-
-    @Value("${twitter.receiveImage}")
-    private String receiveImage;
-
     private final TwitterApiClient twitterApiClient;
 
     private final SocialUserRepository socialUserRepository;
