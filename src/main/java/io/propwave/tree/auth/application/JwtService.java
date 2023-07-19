@@ -23,10 +23,8 @@ public class JwtService {
 
     @Transactional
     public JwtToken getAccessTokenByRefreshToken(String refreshToken) {
-        RefreshToken token = refreshTokenRepository.findById(refreshToken)
-                .orElseThrow(() -> new BadRequestException("재 로그인이 필요한 사용자입니다."));
-        User user = userRepository.findBySocialInformationEmail(token.getEmail())
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        RefreshToken token = RefreshTokenServiceUtil.findRefreshTokenByTokenString(refreshTokenRepository, refreshToken);
+        User user = UserServiceUtil.findUserUserByEmail(userRepository, token.getEmail());
 
         // 기존의 refresh token 삭제
         refreshTokenRepository.deleteById(refreshToken);

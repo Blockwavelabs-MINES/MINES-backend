@@ -16,10 +16,12 @@ public class SendInformationResponseService {
     private Boolean isValid;
     private String tokenTicker;
     private String tokenAmount;
-    private Boolean isExipred;
+    private Boolean isExpired;
     private LocalDateTime expiredAt;
+    private String networkId;
+    private String linkKey;
 
-    public static SendInformationResponseService of(Long transactionId, String senderUsername, String receiverUsername, Boolean isValid, String tokenTicker, String tokenAmount, Boolean isExipred, LocalDateTime expiredAt) {
-        return new SendInformationResponseService(transactionId, senderUsername, receiverUsername, isValid, tokenTicker, tokenAmount, isExipred, expiredAt);
+    public static SendInformationResponseService of(Long transactionId, String senderUsername, String receiverUsername, Boolean isValid, String tokenTicker, String tokenAmount, Boolean isExpired, LocalDateTime expiredAt, String networkId, String linkKey) {
+        return new SendInformationResponseService(transactionId, senderUsername, receiverUsername, isValid, tokenTicker, tokenAmount, isExpired, expiredAt, networkId, linkKey);
     }
 }
