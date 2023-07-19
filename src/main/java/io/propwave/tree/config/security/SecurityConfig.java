@@ -14,7 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+// import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @EnableWebSecurity
 @Configuration
@@ -28,7 +28,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
                 // 로컬에서만 주석을 풀고 실행
-                .requestMatchers(toH2Console())
+                //.requestMatchers(toH2Console())
                 .requestMatchers("/profile")
                 .requestMatchers("/actuator/health")
                 .requestMatchers("/public/**");
