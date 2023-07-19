@@ -1,6 +1,8 @@
 package io.propwave.tree.auth.application;
 
 import io.propwave.tree.auth.application.dto.response.WalletResponseService;
+import io.propwave.tree.auth.application.util.UserServiceUtil;
+import io.propwave.tree.auth.application.util.WalletServiceUtil;
 import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.domain.Wallet;
 import io.propwave.tree.auth.infrastructure.UserRepository;
@@ -26,10 +28,9 @@ public class WalletService {
     @Transactional
     public List<WalletResponseService> getWalletList(String userId) {
 
-        User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
-
+        User user = UserServiceUtil.findUserByUserId(userRepository, userId);
         List<Wallet> walletList = walletRepository.findAllByUserId(user.getId());
+
         return walletList.stream()
                 .map(wallet -> WalletResponseService.of(wallet.getId(), wallet.getWalletAddress(), wallet.getWalletType()))
                 .collect(Collectors.toList());
@@ -38,12 +39,8 @@ public class WalletService {
     @Transactional
     public void registerWallet(Long id, WalletRequest walletRequest) {
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
-
-        if(walletRepository.existsByWalletAddress(walletRequest.getWalletAddress())) {
-           throw new ConflictException("이미 등록된 지갑입니다.");
-        }
+        User user = UserServiceUtil.findUserById(userRepository, id);
+        WalletServiceUtil.validNotExistsByWalletAddress(walletRepository, walletRequest.getWalletAddress());
 
         walletRepository.save(Wallet.newInstance(
                 user,
@@ -55,13 +52,10 @@ public class WalletService {
     @Transactional
     public void deleteWallet(Long id, Long walletId) {
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        User user = UserServiceUtil.findUserById(userRepository, id);
+        Wallet wallet = WalletServiceUtil.findWalletById(walletRepository, walletId);
 
-        Wallet wallet = walletRepository.findById(walletId)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 지갑입니다."));
-
-        if (!wallet.getUser().equals(user)) {
+        if (!wallet.isWalletOwner(user)) {
             throw new ForbiddenException("해당 지갑에 권한이 없습니다.");
         }
 

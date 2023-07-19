@@ -1,13 +1,12 @@
 package io.propwave.tree.auth.application;
 
+import io.propwave.tree.auth.application.util.UserServiceUtil;
 import io.propwave.tree.auth.domain.RefreshToken;
 import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.infrastructure.RefreshTokenRepository;
 import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.config.security.jwt.JwtTokenProvider;
 import io.propwave.tree.config.security.model.JwtToken;
-import io.propwave.tree.exception.model.BadRequestException;
-import io.propwave.tree.exception.model.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
