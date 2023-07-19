@@ -53,11 +53,19 @@ public class ControllerExceptionAdvice {
         );
     }
 
+    @ExceptionHandler(FeignException.BadRequest.class)
+    protected ResponseEntity<ApiResponse> handleFeignExceptionBadRequest(final FeignException error) {
+        return new ResponseEntity<>(
+                ApiResponse.error(Error.SOCIAL_REQUEST_ERROR),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
     /**
      * 401
      */
-    @ExceptionHandler(FeignException.class)
-    protected ResponseEntity<ApiResponse> handleFeignException(final FeignException error) {
+    @ExceptionHandler(FeignException.Unauthorized.class)
+    protected ResponseEntity<ApiResponse> handleFeignExceptionUnauthorized(final FeignException error) {
         return new ResponseEntity<>(
                 ApiResponse.error(Error.SOCIAL_LOGIN_ERROR),
                 HttpStatus.UNAUTHORIZED

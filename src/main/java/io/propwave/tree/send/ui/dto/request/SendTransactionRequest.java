@@ -40,8 +40,5 @@ public class SendTransactionRequest {
     private String transactionHash;
 
     @NotBlank
-    private String tokenContractAddress;
-
-    @NotBlank
     private String networkId;
 }
