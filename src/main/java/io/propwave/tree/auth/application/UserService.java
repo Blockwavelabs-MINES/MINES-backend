@@ -1,6 +1,7 @@
 package io.propwave.tree.auth.application;
 
 import io.propwave.tree.auth.application.dto.request.UpdateProfileRequestService;
+import io.propwave.tree.auth.application.util.UserServiceUtil;
 import io.propwave.tree.auth.domain.Language;
 import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.infrastructure.UserRepository;
@@ -23,13 +24,8 @@ public class UserService {
     @Transactional
     public void updateUserId(Long id, String userId) {
 
-        Boolean isDuplicated = userRepository.existsByUserId(userId);
-        if (isDuplicated) {
-            throw new ConflictException("이미 사용중인 유저 아이디입니다.");
-        }
-
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        UserServiceUtil.validNotExistsUserId(userRepository, userId);
+        User user = UserServiceUtil.findUserById(userRepository, id);
         user.updateUserId(userId);
     }
 
@@ -37,8 +33,7 @@ public class UserService {
     public void updateProfile(Long id, MultipartFile image, UpdateProfileRequestService request) {
         String imageUrl;
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        User user = UserServiceUtil.findUserById(userRepository, id);
 
         // 프로필 이미지가 변경되는 경우
         if (!image.isEmpty()) {
@@ -54,8 +49,7 @@ public class UserService {
     @Transactional
     public void updateLanguage(Long id, Language language) {
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+        User user = UserServiceUtil.findUserById(userRepository, id);
 
         user.updateLanguage(language);
     }

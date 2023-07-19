@@ -41,4 +41,8 @@ public class Link {
         this.linkTitle = linkTitle;
         this.linkUrl = linkUrl;
     }
+
+    public boolean isLinkUser(User user) {
+        return this.user.equals(user);
+    }
 }

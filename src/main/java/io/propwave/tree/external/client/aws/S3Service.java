@@ -66,7 +66,6 @@ public class S3Service {
 
     public void deleteFile(String imageUrl) {
         String imageKey = imageUrl.substring(53);
-        System.out.println(imageKey);
         amazonS3.deleteObject(bucket, imageKey);
     }
 

@@ -1,5 +1,8 @@
 package io.propwave.tree.send.application;
 
+import io.propwave.tree.auth.application.util.SocialServiceUtil;
+import io.propwave.tree.auth.application.util.UserServiceUtil;
+import io.propwave.tree.auth.application.util.WalletServiceUtil;
 import io.propwave.tree.auth.domain.SocialUser;
 import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.domain.Wallet;
@@ -10,6 +13,7 @@ import io.propwave.tree.exception.model.ForbiddenException;
 import io.propwave.tree.exception.model.NotFoundException;
 import io.propwave.tree.send.application.dto.response.SendInformationResponseService;
 import io.propwave.tree.send.application.dto.response.SendTransactionResponseService;
+import io.propwave.tree.send.application.util.SendServiceUtil;
 import io.propwave.tree.send.domain.SendTransaction;
 import io.propwave.tree.send.infrastructure.SendTransactionRepository;
 import io.propwave.tree.send.ui.dto.request.SendTransactionRequest;
@@ -35,19 +39,14 @@ public class SendService {
     @Transactional
     public SendTransactionResponseService saveSendTransaction(Long id, SendTransactionRequest request) {
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
-
-        Wallet wallet = walletRepository.findByWalletAddress(request.getSenderWalletAddress())
-                .orElseThrow(() -> new NotFoundException("등록되지 않은 지갑입니다."));
+        User user = UserServiceUtil.findUserById(userRepository, id);
+        Wallet wallet = WalletServiceUtil.findWalletByWalletAddress(walletRepository, request.getSenderWalletAddress());
 
         if (!wallet.isWalletOwner(user)) {
             throw new ForbiddenException("해당 지갑에 권한이 없습니다.");
         }
 
-        SocialUser senderSocialUser = socialUserRepository.findByUserAndUsername(user, request.getSenderSocialName())
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 소셜 유저입니다."));
-
+        SocialUser senderSocialUser = SocialServiceUtil.findSocialUserByUserAndUsername(socialUserRepository, user, request.getSenderSocialName());
         String linkKey = confirmTheOnlyLinkKey();
 
         SendTransaction sendTransaction = sendTransactionRepository.save(SendTransaction.newInstance(
@@ -74,8 +73,7 @@ public class SendService {
 
     @Transactional
     public SendInformationResponseService getSendInformation(String linkKey) {
-        SendTransaction sendTransaction = sendTransactionRepository.findByReceiveLinkInformationLinkKey(linkKey)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 거래의 링크키입니다."));
+        SendTransaction sendTransaction = SendServiceUtil.findSendTransactionByLinkKey(sendTransactionRepository, linkKey);
 
         return SendInformationResponseService.of(
                 sendTransaction.getId(),
@@ -103,15 +101,9 @@ public class SendService {
 
     @Transactional
     public void updateSendInformation(Long id, Long transactionId, UpdateSendInformationRequest request) {
-        SocialUser receiver = socialUserRepository.findByUserId(id)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
-
-        if (!walletRepository.existsByWalletAddressAndWalletType(request.getReceiverWalletAddress(), request.getReceiverWalletType())) {
-            throw new NotFoundException("존재하지 않는 지갑입니다.");
-        }
-
-        SendTransaction sendTransaction = sendTransactionRepository.findById(transactionId)
-                .orElseThrow(() -> new NotFoundException("존재하지 않는 거래입니다."));
+        SocialUser receiver = SocialServiceUtil.findSocialUserByUserId(socialUserRepository, id);
+        WalletServiceUtil.validNotExistsByWalletAddressAndWalletType(walletRepository, request.getReceiverWalletAddress(), request.getReceiverWalletType());
+        SendTransaction sendTransaction = SendServiceUtil.findSendTransactionById(sendTransactionRepository, transactionId);
 
         if (!sendTransaction.isTransactionOwner(receiver.getUsername(), receiver.getSocialType())) {
             throw new ForbiddenException("접근 권한이 없는 거래입니다.");
