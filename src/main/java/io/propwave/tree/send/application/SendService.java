@@ -85,7 +85,9 @@ public class SendService {
                 sendTransaction.getTokenTicker(),
                 sendTransaction.getTokenAmount(),
                 sendTransaction.isExpiredAt(sendTransaction.getExpiredAt()),
-                sendTransaction.getExpiredAt().withNano(0)
+                sendTransaction.getExpiredAt().withNano(0),
+                sendTransaction.getTransactionInformation().getNetworkId(),
+                sendTransaction.getReceiveLinkInformation().getLinkKey()
         );
     }
 
