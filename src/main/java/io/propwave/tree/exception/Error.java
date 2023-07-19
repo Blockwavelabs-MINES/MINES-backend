@@ -25,6 +25,7 @@ public enum Error {
 
     // auth
     SOCIAL_LOGIN_ERROR(HttpStatus.UNAUTHORIZED, "인증할 수 없는 OAuth2.0 사용자입니다."),
+    SOCIAL_REQUEST_ERROR(HttpStatus.BAD_REQUEST, "소셜 기능 요청 형식이 잘못됐습니다."),
     TOKEN_EXPIRED_ERROR(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
     MALFORMED_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "잘못된 토큰 형식입니다."),
     NULL_TOKE_ERROR(HttpStatus.UNAUTHORIZED, "토큰이 존재하지 않습니다."),

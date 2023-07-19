@@ -17,12 +17,9 @@ public class TransactionInformation {
     private String transactionHash;
 
     @Column(nullable = false)
-    private String tokenContractAddress;
-
-    @Column(nullable = false)
     private String networkId;
 
-    protected static TransactionInformation of(String transactionHash, String tokenContractAddress, String networkId) {
-        return new TransactionInformation(transactionHash, tokenContractAddress, networkId);
+    protected static TransactionInformation of(String transactionHash, String networkId) {
+        return new TransactionInformation(transactionHash, networkId);
     }
 }

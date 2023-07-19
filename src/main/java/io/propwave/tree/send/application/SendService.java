@@ -62,7 +62,6 @@ public class SendService {
                 request.getTokenAmount(),
                 linkKey,
                 request.getTransactionHash(),
-                request.getTokenContractAddress(),
                 request.getNetworkId(),
                 LocalDateTime.now().plusDays(3)
         ));
@@ -84,7 +83,9 @@ public class SendService {
                 sendTransaction.getReceiverSocialName(),
                 sendTransaction.getReceiveLinkInformation().getIsLinkValid(),
                 sendTransaction.getTokenTicker(),
-                sendTransaction.getTokenAmount()
+                sendTransaction.getTokenAmount(),
+                sendTransaction.isExpiredAt(sendTransaction.getExpiredAt()),
+                sendTransaction.getExpiredAt().withNano(0)
         );
     }
 

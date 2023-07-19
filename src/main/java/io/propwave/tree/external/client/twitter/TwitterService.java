@@ -1,9 +1,11 @@
 package io.propwave.tree.external.client.twitter;
 
+import io.propwave.tree.auth.domain.SocialUser;
+import io.propwave.tree.auth.infrastructure.SocialUserRepository;
+import io.propwave.tree.exception.model.NotFoundException;
 import io.propwave.tree.external.client.dto.OAuth2Token;
-import io.propwave.tree.external.client.dto.twitter.TwitterOAuth2Token;
-import io.propwave.tree.external.client.dto.twitter.TwitterUser;
-import io.propwave.tree.external.client.dto.twitter.TwitterUserData;
+import io.propwave.tree.external.client.dto.twitter.*;
+import io.propwave.tree.utils.SamTreeUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,15 @@ public class TwitterService {
     @Value("${twitter.codeVerifier}")
     private String codeVerifier;
 
+    @Value("${twitter.sendImage}")
+    private String sendImage;
+
+    @Value("${twitter.receiveImage}")
+    private String receiveImage;
+
     private final TwitterApiClient twitterApiClient;
+
+    private final SocialUserRepository socialUserRepository;
 
     public TwitterUser getUserInfo(String code) {
 
@@ -45,6 +55,23 @@ public class TwitterService {
                 twitterOAuth2Token.getAccessToken(),
                 twitterOAuth2Token.getRefreshToken()
         );
+    }
+
+    public TweetLink createTweet(Long userId, TweetRequest request) {
+
+        SocialUser socialUser = socialUserRepository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        String content = request.getTweetType().equals(TweetType.SENDER) ?
+                SamTreeUtil.makeSendTweetContent(socialUser.getUser().getLanguage(), request.getComment(), request.getTokenTicker(), request.getTokenAmount(), request.getTime(), request.getReceiverUsername()) :
+                SamTreeUtil.makeReceiveTweetContent(socialUser.getUser().getLanguage(), request.getTokenTicker(), request.getTokenAmount(), request.getTime(), request.getSenderUsername());
+
+        TweetInfo tweetInfo = twitterApiClient.createTweet(
+                "Bearer " + socialUser.getAccessToken(),
+                TweetText.of(content)
+        );
+
+        return TweetLink.of("https://twitter.com/" + socialUser.getUsername() + "/status" + tweetInfo.getData().getId());
     }
 
     public OAuth2Token getTokenByRefreshToken(String refreshToken) {

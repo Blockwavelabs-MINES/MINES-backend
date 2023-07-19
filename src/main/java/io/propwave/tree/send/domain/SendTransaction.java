@@ -79,7 +79,6 @@ public class SendTransaction {
             String tokenAmount,
             String linkKey,
             String transactionHash,
-            String tokenContractAddress,
             String networkId,
             LocalDateTime expiredAt
     ) {
@@ -93,7 +92,7 @@ public class SendTransaction {
         this.tokenTicker = tokenTicker;
         this.tokenAmount = tokenAmount;
         this.receiveLinkInformation = ReceiveLinkInformation.of(linkKey);
-        this.transactionInformation = TransactionInformation.of(transactionHash, tokenContractAddress, networkId);
+        this.transactionInformation = TransactionInformation.of(transactionHash, networkId);
         this.expiredAt = expiredAt;
     }
 
@@ -109,11 +108,10 @@ public class SendTransaction {
             String tokenAmount,
             String linkKey,
             String transactionHash,
-            String tokenContractAddress,
             String networkId,
             LocalDateTime expiredAt
     ) {
-        return new SendTransaction(socialUser, senderSocialName, senderSocialType, senderWalletAddress, senderWalletType, receiverSocialName, receiverSocialType, tokenTicker, tokenAmount, linkKey, transactionHash, tokenContractAddress, networkId, expiredAt);
+        return new SendTransaction(socialUser, senderSocialName, senderSocialType, senderWalletAddress, senderWalletType, receiverSocialName, receiverSocialType, tokenTicker, tokenAmount, linkKey, transactionHash, networkId, expiredAt);
     }
 
     public void updateReceiverInformation(String receiverWalletAddress, WalletType receiverWalletType) {
@@ -124,5 +122,9 @@ public class SendTransaction {
 
     public boolean isTransactionOwner(String receiverSocialName, SocialType receiverSocialType) {
         return this.receiverSocialName.equals(receiverSocialName) && this.receiverSocialType.equals(receiverSocialType);
+    }
+
+    public boolean isExpiredAt(LocalDateTime expiredAt) {
+        return expiredAt.isBefore(LocalDateTime.now());
     }
 }

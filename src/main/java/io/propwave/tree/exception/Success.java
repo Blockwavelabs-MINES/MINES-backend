@@ -18,6 +18,7 @@ public enum Success {
     CONNECT_SUCCESS(HttpStatus.OK, "소셜 계정 연동이 완료됐습니다."),
     DISCONNECT_SUCCESS(HttpStatus.OK, "소셜 계정 연동 해제가 완료됐습니다."),
     REFRESH_SUCCESS(HttpStatus.OK, "소셜 계정 OAuth2.0 토큰 갱신이 완료됐습니다."),
+    TWEET_SUCCESS(HttpStatus.CREATED, "트윗 올리기가 완료됐습니다."),
 
     // user
     GET_USER_INFORMATION_SUCCESS(HttpStatus.OK, "유저 정보 조회가 완료됐습니다."),
