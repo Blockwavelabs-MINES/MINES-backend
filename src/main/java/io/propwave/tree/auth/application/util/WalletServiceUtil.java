@@ -28,7 +28,7 @@ public class WalletServiceUtil {
     }
 
     public static void validNotExistsByWalletAddressAndWalletType(WalletRepository walletRepository, String walletAddress, WalletType walletType) {
-        if (walletRepository.existsByWalletAddressAndWalletType(walletAddress, walletType)) {
+        if (!walletRepository.existsByWalletAddressAndWalletType(walletAddress, walletType)) {
             throw new NotFoundException("존재하지 않는 지갑입니다.");
         }
     }
