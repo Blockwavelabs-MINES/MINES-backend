@@ -40,11 +40,6 @@ public class SendService {
     public SendTransactionResponseService saveSendTransaction(Long id, SendTransactionRequest request) {
 
         User user = UserServiceUtil.findUserById(userRepository, id);
-        Wallet wallet = WalletServiceUtil.findWalletByWalletAddress(walletRepository, request.getSenderWalletAddress());
-
-        if (!wallet.isWalletOwner(user)) {
-            throw new ForbiddenException("해당 지갑에 권한이 없습니다.");
-        }
 
         SocialUser senderSocialUser = SocialServiceUtil.findSocialUserByUserAndUsername(socialUserRepository, user, request.getSenderSocialName());
         String linkKey = confirmTheOnlyLinkKey();
