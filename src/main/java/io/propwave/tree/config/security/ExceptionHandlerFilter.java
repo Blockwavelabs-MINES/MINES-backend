@@ -3,7 +3,6 @@ package io.propwave.tree.config.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
 import io.propwave.tree.common.dto.ApiResponse;
 import io.propwave.tree.exception.Error;
 import jakarta.servlet.FilterChain;
@@ -35,8 +34,6 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         } catch (IllegalArgumentException e) {
             // 토큰이 없는 경우
             setErrorResponse(response, Error.NULL_TOKE_ERROR);
-        } catch (SignatureException e) {
-            setErrorResponse(response, Error.TOKEN_SIGNATURE_EXCEPTION);
         }
     }
     private void setErrorResponse(HttpServletResponse response, Error error) {

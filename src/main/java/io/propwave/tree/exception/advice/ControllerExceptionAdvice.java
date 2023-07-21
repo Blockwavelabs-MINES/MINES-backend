@@ -4,6 +4,7 @@ import feign.FeignException;
 import io.propwave.tree.common.dto.ApiResponse;
 import io.propwave.tree.exception.Error;
 import io.propwave.tree.exception.model.SamTreeException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -16,6 +17,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @RestControllerAdvice
+@Slf4j
 public class ControllerExceptionAdvice {
 
     /**
@@ -99,6 +101,7 @@ public class ControllerExceptionAdvice {
      */
     @ExceptionHandler(SamTreeException.class)
     protected ResponseEntity<ApiResponse> handleSamTreeException(final SamTreeException error) {
+        log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.getError().toString(), error.getMessage()));
         return new ResponseEntity<>(
                 ApiResponse.error(error.getError(), error.getMessage()),
                 error.getError().getCode()
