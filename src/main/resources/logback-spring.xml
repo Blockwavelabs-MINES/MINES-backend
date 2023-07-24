@@ -14,32 +14,7 @@
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>/home/ubuntu/log/${LOG_FILE_NAME}</file>
-        <encoder>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-        </encoder>
-    </appender>
-
-    <appender name="ERROR-FILE" class="ch.qos.logback.core.FileAppender">
-        <filtter class="ch.qos.logback.classic.filter.LevelFilter">
-            <!-- Error 레벨의 로그만 기록 -->
-            <level>error</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filtter>
-        <file>/home/ubuntu/log/${ERROR_LOG_FILE_NAME}</file>
-        <encoder>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-        </encoder>
-    </appender>
-
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
     </root>
-
-    <logger name="io.propwave.tree" level="ERROR" additivity="false">
-        <appender-ref ref="ERROR-FILE" />
-    </logger>
 </configuration>
