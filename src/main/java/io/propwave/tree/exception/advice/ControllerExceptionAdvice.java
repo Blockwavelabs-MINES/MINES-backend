@@ -4,6 +4,7 @@ import feign.FeignException;
 import io.propwave.tree.common.dto.ApiResponse;
 import io.propwave.tree.exception.Error;
 import io.propwave.tree.exception.model.SamTreeException;
+import io.sentry.Sentry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,8 @@ public class ControllerExceptionAdvice {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<ApiResponse> handleHttpMessageNotReadableException(final HttpMessageNotReadableException error) {
+        Sentry.captureException(error);
+        log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.toString(), error.getMessage()));
         return new ResponseEntity<>(
                 ApiResponse.error(Error.JSON_PARSING_ERROR),
                 HttpStatus.BAD_REQUEST
@@ -33,6 +36,8 @@ public class ControllerExceptionAdvice {
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     protected ResponseEntity<ApiResponse> handleMissingServletRequestParameterException(final MissingServletRequestParameterException error) {
+        Sentry.captureException(error);
+        log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.toString(), error.getMessage()));
         return new ResponseEntity<>(
                 ApiResponse.error(Error.MISSING_PARAMETER_ERROR),
                 HttpStatus.BAD_REQUEST
@@ -41,6 +46,8 @@ public class ControllerExceptionAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ApiResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException error) {
+        Sentry.captureException(error);
+        log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.toString(), error.getMessage()));
         return new ResponseEntity<>(
                 ApiResponse.error(Error.VALIDATION_ERROR),
                 HttpStatus.BAD_REQUEST
@@ -49,6 +56,8 @@ public class ControllerExceptionAdvice {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<ApiResponse> handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException error) {
+        Sentry.captureException(error);
+        log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.toString(), error.getMessage()));
         return new ResponseEntity<>(
                 ApiResponse.error(Error.TYPE_MISSMATCH_ERROR),
                 HttpStatus.BAD_REQUEST
@@ -57,6 +66,8 @@ public class ControllerExceptionAdvice {
 
     @ExceptionHandler(FeignException.BadRequest.class)
     protected ResponseEntity<ApiResponse> handleFeignExceptionBadRequest(final FeignException error) {
+        Sentry.captureException(error);
+        log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.toString(), error.getMessage()));
         return new ResponseEntity<>(
                 ApiResponse.error(Error.SOCIAL_REQUEST_ERROR),
                 HttpStatus.BAD_REQUEST
@@ -68,6 +79,8 @@ public class ControllerExceptionAdvice {
      */
     @ExceptionHandler(FeignException.Unauthorized.class)
     protected ResponseEntity<ApiResponse> handleFeignExceptionUnauthorized(final FeignException error) {
+        Sentry.captureException(error);
+        log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.toString(), error.getMessage()));
         return new ResponseEntity<>(
                 ApiResponse.error(Error.SOCIAL_LOGIN_ERROR),
                 HttpStatus.UNAUTHORIZED
@@ -79,6 +92,8 @@ public class ControllerExceptionAdvice {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     protected ResponseEntity<ApiResponse> handleNoHandlerFoundException (final NoHandlerFoundException error) {
+        Sentry.captureException(error);
+        log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.toString(), error.getMessage()));
         return new ResponseEntity<>(
                 ApiResponse.error(Error.NOT_FOUND_EXCEPTION),
                 HttpStatus.NOT_FOUND
@@ -89,7 +104,9 @@ public class ControllerExceptionAdvice {
      * 405
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    protected ResponseEntity<ApiResponse> HttpRequestMethodNotSupportedException(final HttpRequestMethodNotSupportedException error) {
+    protected ResponseEntity<ApiResponse> handleHttpRequestMethodNotSupportedException(final HttpRequestMethodNotSupportedException error) {
+        Sentry.captureException(error);
+        log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.toString(), error.getMessage()));
         return new ResponseEntity<>(
                 ApiResponse.error(Error.METHOD_NOT_ALLOWED_ERROR),
                 HttpStatus.METHOD_NOT_ALLOWED
@@ -101,6 +118,7 @@ public class ControllerExceptionAdvice {
      */
     @ExceptionHandler(SamTreeException.class)
     protected ResponseEntity<ApiResponse> handleSamTreeException(final SamTreeException error) {
+        Sentry.captureException(error);
         log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.getError().toString(), error.getMessage()));
         return new ResponseEntity<>(
                 ApiResponse.error(error.getError(), error.getMessage()),

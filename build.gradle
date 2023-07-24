@@ -66,6 +66,10 @@ dependencies {
 
 	// Swagger
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
+
+	// sentry
+	implementation 'io.sentry:sentry-logback:6.25.2'
+	implementation 'io.sentry:sentry-spring-boot-starter-jakarta:6.25.2'
 }
 
 tasks.named('test') {
