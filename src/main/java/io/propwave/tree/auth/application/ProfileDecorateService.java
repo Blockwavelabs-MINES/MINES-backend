@@ -72,7 +72,6 @@ public class ProfileDecorateService {
     }
 
     private BackgroundType checkBackgroundType(String backgroundColor, MultipartFile backgroundImg) {
-        System.out.println(backgroundColor);
         if (backgroundColor.length() == 0 && backgroundImg.isEmpty()) {
             throw new BadRequestException("배경 색과 배경 이미지 모두 요청되지 않았습니다.");
         }
