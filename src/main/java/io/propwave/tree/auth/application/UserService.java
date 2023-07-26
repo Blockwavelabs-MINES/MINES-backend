@@ -36,7 +36,7 @@ public class UserService {
         User user = UserServiceUtil.findUserById(userRepository, id);
 
         // 프로필 이미지가 변경되는 경우
-        if (image != null) {
+        if (!image.isEmpty()) {
             imageUrl = s3Service.uploadImage(image, "profile");
             s3Service.deleteFile(user.getProfile().getProfileImg());
 

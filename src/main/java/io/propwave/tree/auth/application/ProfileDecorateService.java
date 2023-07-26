@@ -72,15 +72,15 @@ public class ProfileDecorateService {
     }
 
     private BackgroundType checkBackgroundType(String backgroundColor, MultipartFile backgroundImg) {
-        if (backgroundColor.length() == 0 && backgroundImg == null) {
+        if (backgroundColor.length() == 0 && backgroundImg.isEmpty()) {
             throw new BadRequestException("배경 색과 배경 이미지 모두 요청되지 않았습니다.");
         }
 
-        if (backgroundColor.length() != 0 && backgroundImg != null) {
+        if (backgroundColor.length() != 0 && !backgroundImg.isEmpty()) {
             throw new BadRequestException("배경 색과 배경 이미지 모두 요청됐습니다.");
         }
 
-        if (backgroundImg != null) {
+        if (!backgroundImg.isEmpty()) {
             return BackgroundType.IMAGE;
         }
 
