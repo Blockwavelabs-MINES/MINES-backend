@@ -10,7 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileDecorateRequest {
 
     private MultipartFile image;
+
     private String backgroundColor;
+
     @NotBlank
     private String buttonColor;
     @NotBlank
