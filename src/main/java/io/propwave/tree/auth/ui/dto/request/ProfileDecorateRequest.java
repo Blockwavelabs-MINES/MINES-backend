@@ -10,10 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProfileDecorateRequest {
 
-    @Nullable
     private MultipartFile image;
 
-    @Nullable
     private String backgroundColor;
 
     @NotBlank

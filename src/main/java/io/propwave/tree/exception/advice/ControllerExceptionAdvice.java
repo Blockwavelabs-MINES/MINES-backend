@@ -44,15 +44,15 @@ public class ControllerExceptionAdvice {
         );
     }
 
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    protected ResponseEntity<ApiResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException error) {
-//        Sentry.captureException(error);
-//        log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.toString(), error.getMessage()));
-//        return new ResponseEntity<>(
-//                ApiResponse.error(Error.VALIDATION_ERROR),
-//                HttpStatus.BAD_REQUEST
-//        );
-//    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    protected ResponseEntity<ApiResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException error) {
+        Sentry.captureException(error);
+        log.error(String.format("ERROR TYPE: %s%nERROR CONTENT: %s", error.toString(), error.getMessage()));
+        return new ResponseEntity<>(
+                ApiResponse.error(Error.VALIDATION_ERROR),
+                HttpStatus.BAD_REQUEST
+        );
+    }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<ApiResponse> handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException error) {

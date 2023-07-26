@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProfileUpdateRequest {
 
-    @Nullable
     private MultipartFile image;
 
     @NotNull
