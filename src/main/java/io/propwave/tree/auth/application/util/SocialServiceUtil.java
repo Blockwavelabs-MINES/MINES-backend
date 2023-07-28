@@ -8,8 +8,6 @@ import io.propwave.tree.exception.model.NotFoundException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SocialServiceUtil {
 

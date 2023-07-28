@@ -7,12 +7,14 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SendTransaction {
 
@@ -66,6 +68,10 @@ public class SendTransaction {
 
     @Column(nullable = false)
     private LocalDateTime expiredAt;
+
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private Boolean isRefund;
 
     private SendTransaction(
             SocialUser socialUser,
@@ -126,5 +132,9 @@ public class SendTransaction {
 
     public boolean isExpiredAt(LocalDateTime expiredAt) {
         return expiredAt.isBefore(LocalDateTime.now());
+    }
+
+    public void completeRefund() {
+        this.isRefund = true;
     }
 }

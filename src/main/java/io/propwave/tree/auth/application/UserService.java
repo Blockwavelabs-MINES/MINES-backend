@@ -5,8 +5,6 @@ import io.propwave.tree.auth.application.util.UserServiceUtil;
 import io.propwave.tree.auth.domain.Language;
 import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.infrastructure.UserRepository;
-import io.propwave.tree.exception.model.ConflictException;
-import io.propwave.tree.exception.model.NotFoundException;
 import io.propwave.tree.external.client.aws.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

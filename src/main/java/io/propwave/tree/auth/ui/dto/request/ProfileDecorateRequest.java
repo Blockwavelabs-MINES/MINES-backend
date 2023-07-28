@@ -1,6 +1,5 @@
 package io.propwave.tree.auth.ui.dto.request;
 
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;

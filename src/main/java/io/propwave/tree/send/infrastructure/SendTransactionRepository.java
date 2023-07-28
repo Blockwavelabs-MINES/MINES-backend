@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface SendTransactionRepository extends JpaRepository<SendTransaction, Long> {
+public interface SendTransactionRepository extends JpaRepository<SendTransaction, Long>, SendTransactionRepositoryCustom {
 
     // CREATE
 
