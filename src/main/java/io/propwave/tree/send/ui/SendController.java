@@ -45,4 +45,9 @@ public class SendController {
                 HttpStatus.OK
         );
     }
+
+    @PutMapping("/public/secret/send/refund")
+    public void refund() {
+        sendService.refund();
+    }
 }

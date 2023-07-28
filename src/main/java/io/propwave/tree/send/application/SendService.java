@@ -11,6 +11,7 @@ import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.auth.infrastructure.WalletRepository;
 import io.propwave.tree.exception.model.ForbiddenException;
 import io.propwave.tree.exception.model.NotFoundException;
+import io.propwave.tree.external.client.ethereum.Web3jService;
 import io.propwave.tree.send.application.dto.response.SendInformationResponseService;
 import io.propwave.tree.send.application.dto.response.SendTransactionResponseService;
 import io.propwave.tree.send.application.util.SendServiceUtil;
@@ -20,16 +21,24 @@ import io.propwave.tree.send.ui.dto.request.SendTransactionRequest;
 import io.propwave.tree.send.ui.dto.request.UpdateSendInformationRequest;
 import io.propwave.tree.utils.SamTreeUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class SendService {
+
+    private final Web3jService web3jService;
 
     private final SendTransactionRepository sendTransactionRepository;
     private final UserRepository userRepository;
@@ -105,5 +114,19 @@ public class SendService {
         }
 
         sendTransaction.updateReceiverInformation(request.getReceiverWalletAddress(), request.getReceiverWalletType());
+    }
+
+    @Transactional
+    public void refund() {
+
+        List<SendTransaction> sendTransactions = sendTransactionRepository.findAllExpiredTransaction();
+        for (SendTransaction sendTransaction : sendTransactions) {
+            try {
+                web3jService.sendGoerliEthToReceiver(sendTransaction.getSenderWalletAddress(), Double.parseDouble(sendTransaction.getTokenAmount()));
+                sendTransaction.completeRefund();
+            } catch (IOException e) {
+                log.error(e.getMessage());
+            }
+        }
     }
 }

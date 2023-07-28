@@ -7,8 +7,6 @@ import io.propwave.tree.auth.domain.SocialType;
 import io.propwave.tree.auth.domain.User;
 import io.propwave.tree.auth.infrastructure.ProfileDecorateRepository;
 import io.propwave.tree.auth.infrastructure.UserRepository;
-import io.propwave.tree.config.security.jwt.JwtTokenProvider;
-import io.propwave.tree.config.security.model.JwtToken;
 import io.propwave.tree.external.client.dto.google.GoogleUserInfo;
 import io.propwave.tree.external.client.google.GoogleService;
 import io.propwave.tree.utils.SamTreeUtil;
