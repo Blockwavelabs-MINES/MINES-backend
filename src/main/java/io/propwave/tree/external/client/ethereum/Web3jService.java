@@ -57,29 +57,6 @@ public class Web3jService {
         String hexValue = Numeric.toHexString(signedMessage);
 
         EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).send();
-        String transactionHash = ethSendTransaction.getTransactionHash();
-
-        try {
-            return waitForTransactionReceipt(transactionHash);
-        } catch (IOException | InterruptedException e) {
-            log.error(e.getMessage());
-            return "FAILED";
-        }
-    }
-
-    private String waitForTransactionReceipt(String transactionHash) throws IOException, InterruptedException {
-        long sleepDuration = 1000L;
-        int attempts = 10;
-
-        for (int i = 0; i < attempts; i++) {
-            EthGetTransactionReceipt transactionReceipt = web3j.ethGetTransactionReceipt(transactionHash).send();
-            if (transactionReceipt.getTransactionReceipt().isPresent()) {
-                return transactionHash;
-            }
-
-            Thread.sleep(sleepDuration);
-        }
-
-        return "FAILED";
+        return ethSendTransaction.getTransactionHash();
     }
 }

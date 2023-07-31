@@ -5,12 +5,10 @@ import io.propwave.tree.auth.application.util.UserServiceUtil;
 import io.propwave.tree.auth.application.util.WalletServiceUtil;
 import io.propwave.tree.auth.domain.SocialUser;
 import io.propwave.tree.auth.domain.User;
-import io.propwave.tree.auth.domain.Wallet;
 import io.propwave.tree.auth.infrastructure.SocialUserRepository;
 import io.propwave.tree.auth.infrastructure.UserRepository;
 import io.propwave.tree.auth.infrastructure.WalletRepository;
 import io.propwave.tree.exception.model.ForbiddenException;
-import io.propwave.tree.exception.model.NotFoundException;
 import io.propwave.tree.external.client.ethereum.Web3jService;
 import io.propwave.tree.send.application.dto.response.SendInformationResponseService;
 import io.propwave.tree.send.application.dto.response.SendTransactionResponseService;
@@ -26,11 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
