@@ -43,7 +43,7 @@ public class SamTreeUtil {
                     .append("👇 @").append(receiverUsername).append(" 에게 보내는 메세지\n")
                     .append("\n")
                     .append(comment).append("\n")
-                    .append("https://3tree.io").append("\n");
+                    .append("https://3tree.io/send").append("\n");
         } else {
             sb
                     .append("I sent ").append(tokenAmount).append(" ").append(tokenTicker).append(" to @").append(receiverUsername).append(" through 3TREE 🥳\n")
@@ -51,7 +51,7 @@ public class SamTreeUtil {
                     .append("👇 Message to @").append(receiverUsername).append("\n")
                     .append("\n")
                     .append(comment).append("\n")
-                    .append("https://3tree.io").append("\n");
+                    .append("https://3tree.io/receive").append("\n");
         }
 
         return sb.toString();
