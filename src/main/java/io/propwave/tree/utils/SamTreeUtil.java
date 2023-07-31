@@ -51,7 +51,7 @@ public class SamTreeUtil {
                     .append("👇 Message to @").append(receiverUsername).append("\n")
                     .append("\n")
                     .append(comment).append("\n")
-                    .append("https://3tree.io/receive").append("\n");
+                    .append("https://3tree.io/send").append("\n");
         }
 
         return sb.toString();
@@ -67,7 +67,7 @@ public class SamTreeUtil {
                     .append("⏰ 받은 시간 | ").append(time).append("\n")
                     .append("💰 토큰 수량 | ").append(tokenAmount).append(" ").append(tokenTicker).append("\n")
                     .append("시세를 알고 싶다면? https://coinmarketcap.com/ko/").append("\n")
-                    .append("https://3tree.io/sendme").append("\n");
+                    .append("https://3tree.io/receive").append("\n");
         } else {
             sb
                     .append("I received ").append(tokenAmount).append(" ").append(tokenTicker).append(" from @").append(senderUsername).append(" via 3TREE 🥳\n")
@@ -75,7 +75,7 @@ public class SamTreeUtil {
                     .append("⏰ Receive Time | ").append(time).append("\n")
                     .append("💰 Token Amount | ").append(tokenAmount).append(" ").append(tokenTicker).append("\n")
                     .append("If you want to know the market price? https://coinmarketcap.com/ko/").append("\n")
-                    .append("https://3tree.io/sendme").append("\n");
+                    .append("https://3tree.io/receive").append("\n");
         }
 
         return sb.toString();
