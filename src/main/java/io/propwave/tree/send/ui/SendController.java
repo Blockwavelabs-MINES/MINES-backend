@@ -8,6 +8,7 @@ import io.propwave.tree.send.application.dto.response.SendInformationResponseSer
 import io.propwave.tree.send.application.dto.response.SendTransactionResponseService;
 import io.propwave.tree.send.ui.dto.request.SendTransactionRequest;
 import io.propwave.tree.send.ui.dto.request.UpdateSendInformationRequest;
+import io.propwave.tree.send.ui.dto.response.TransactionListResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,11 +16,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 public class SendController {
 
     private final SendService sendService;
+
+    @GetMapping("/send/list")
+    public ResponseEntity<ApiResponse<Map<LocalDate, List<TransactionListResponse>>>> getTransactionList(@AuthenticationPrincipal User user, @RequestParam(name = "id", required = false) Long id) {
+        return new ResponseEntity<>(
+                ApiResponse.success(Success.GET_TRANSACTION_LIST_SUCCESS, sendService.getTransactionList(user.getId(), id)),
+                HttpStatus.OK
+        );
+    }
 
     @PostMapping("/send")
     public ResponseEntity<ApiResponse<SendTransactionResponseService>> sendTransactionSave(@AuthenticationPrincipal User user, @RequestBody @Valid final SendTransactionRequest request) {

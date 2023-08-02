@@ -27,4 +27,19 @@ public class SendTransactionRepositoryCustomImpl implements SendTransactionRepos
                 )
                 .fetch();
     }
+
+    @Override
+    public List<SendTransaction> findAllByLastId(String socialName, Long lastLoadedId) {
+
+        return queryFactory
+                .select(sendTransaction)
+                .from(sendTransaction)
+                .where(
+                        lastLoadedId == null ? null : sendTransaction.id.lt(lastLoadedId),
+                        sendTransaction.senderSocialName.eq(socialName).or(sendTransaction.receiverSocialName.eq(socialName))
+                )
+                .orderBy(sendTransaction.id.desc())
+                .limit(10)
+                .fetch();
+    }
 }

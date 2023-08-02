@@ -11,6 +11,10 @@ public class SamTreeUtil {
 
     private static final Random random = new Random();
 
+    public static String getTickerImageUrl(String tokenTicker) {
+        return "hello";
+    }
+
     public static String makeUserIdByEmail(String email) {
         String[] emailSplitByAtSign = email.split("@");
         String[] emailPlatform = emailSplitByAtSign[1].split("\\.");
