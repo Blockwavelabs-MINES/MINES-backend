@@ -42,9 +42,9 @@ public class AuthController {
     }
 
     @GetMapping("/public/auth/refresh")
-    public ResponseEntity<ApiResponse<JwtToken>> refresh(@RequestHeader("refresh_token") final String refreshToken) {
+    public ResponseEntity<ApiResponse<JwtToken>> refresh(@RequestHeader("Refresh-Token") final String refreshToken) {
         return new ResponseEntity<>(
-                ApiResponse.success(Success.TOKEN_REFRESH_SUCCESS, jwtService.getAccessTokenByRefreshToken(refreshToken)),
+                ApiResponse.success(Success.TOKEN_REFRESH_SUCCESS, jwtService.getAccessTokenByRefreshToken(refreshToken.substring(7))),
                 HttpStatus.OK
         );
     }
