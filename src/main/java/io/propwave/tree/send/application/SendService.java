@@ -17,6 +17,7 @@ import io.propwave.tree.send.domain.SendTransaction;
 import io.propwave.tree.send.infrastructure.SendTransactionRepository;
 import io.propwave.tree.send.ui.dto.request.SendTransactionRequest;
 import io.propwave.tree.send.ui.dto.request.UpdateSendInformationRequest;
+import io.propwave.tree.send.ui.dto.response.TransactionListResponse;
 import io.propwave.tree.utils.SamTreeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +25,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -39,6 +43,32 @@ public class SendService {
     private final UserRepository userRepository;
     private final SocialUserRepository socialUserRepository;
     private final WalletRepository walletRepository;
+
+    @Transactional
+    public Map<LocalDate, List<TransactionListResponse>> getTransactionList(Long userId, Long lastLoadedId) {
+
+        SocialUser socialUser = SocialServiceUtil.findSocialUserByUserId(socialUserRepository, userId);
+
+        List<SendTransaction> sendTransactionList = sendTransactionRepository.findAllByLastId(socialUser.getUsername(), lastLoadedId);
+
+        List<TransactionListResponse> transactionListResponseList = sendTransactionList.stream()
+                .map(transaction -> {
+                    String tickerImageUrl = SamTreeUtil.getTickerImageUrl(transaction.getTokenTicker());
+                    String status = web3jService.getTransactionStatus(transaction.getTransactionInformation().getTransactionHash());
+                    return TransactionListResponse.of(
+                            transaction.getId(),
+                            transaction.getCreatedAt().toLocalDate(),
+                            tickerImageUrl,
+                            transaction.getSenderSocialName(),
+                            transaction.getTokenAmount(),
+                            status,
+                            transaction.getReceiveLinkInformation().getLinkKey()
+                    );
+                }).toList();
+
+        return transactionListResponseList.stream()
+                .collect(Collectors.groupingBy(TransactionListResponse::getCreatedAt));
+    }
 
     @Transactional
     public SendTransactionResponseService saveSendTransaction(Long id, SendTransactionRequest request) {

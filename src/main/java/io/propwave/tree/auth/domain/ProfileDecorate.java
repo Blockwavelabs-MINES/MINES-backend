@@ -1,5 +1,6 @@
 package io.propwave.tree.auth.domain;
 
+import io.propwave.tree.common.domain.AuditingTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import org.hibernate.annotations.DynamicInsert;
 @Getter
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProfileDecorate {
+public class ProfileDecorate extends AuditingTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

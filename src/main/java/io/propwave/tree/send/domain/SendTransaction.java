@@ -3,6 +3,7 @@ package io.propwave.tree.send.domain;
 import io.propwave.tree.auth.domain.SocialType;
 import io.propwave.tree.auth.domain.SocialUser;
 import io.propwave.tree.auth.domain.WalletType;
+import io.propwave.tree.common.domain.AuditingTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SendTransaction {
+public class SendTransaction extends AuditingTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
