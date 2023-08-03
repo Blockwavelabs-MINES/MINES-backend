@@ -18,13 +18,15 @@ public class TransactionInfo {
 
     private String senderName;
 
+    private String receiverName;
+
     private String tokenAmount;
 
     private String status;
 
     private String linkKey;
 
-    public static TransactionInfo of(Long id, LocalDate createdAt, String tickerImageUrl, String senderName, String tokenAmount, String status, String linkKey) {
-        return new TransactionInfo(id, createdAt, tickerImageUrl, senderName, tokenAmount, status, linkKey);
+    public static TransactionInfo of(Long id, LocalDate createdAt, String tickerImageUrl, String senderName, String receiverName, String tokenAmount, String status, String linkKey) {
+        return new TransactionInfo(id, createdAt, tickerImageUrl, senderName, receiverName, tokenAmount, status, linkKey);
     }
 }

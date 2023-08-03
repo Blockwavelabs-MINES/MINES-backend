@@ -22,6 +22,7 @@ import io.propwave.tree.send.ui.dto.response.TransactionListResponse;
 import io.propwave.tree.utils.SamTreeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,9 @@ public class SendService {
     private final UserRepository userRepository;
     private final SocialUserRepository socialUserRepository;
     private final WalletRepository walletRepository;
+
+    @Value("${image.goerli}")
+    private String goerliTickerImageUrl;
 
     @Transactional
     public TransactionListResponse getTransactionList(Long userId, Long lastLoadedId) {
@@ -149,16 +153,21 @@ public class SendService {
     }
 
     private TransactionInfo mapToSendTransaction(SendTransaction transaction) {
-        String tickerImageUrl = SamTreeUtil.getTickerImageUrl(transaction.getTokenTicker());
+        String tickerImageUrl = getTickerImageUrl(transaction.getTokenTicker());
         String status = web3jService.getTransactionStatus(transaction.getTransactionInformation().getTransactionHash());
         return TransactionInfo.of(
                 transaction.getId(),
                 transaction.getCreatedAt().toLocalDate(),
                 tickerImageUrl,
                 transaction.getSenderSocialName(),
+                transaction.getReceiverSocialName(),
                 transaction.getTokenAmount(),
                 status,
                 transaction.getReceiveLinkInformation().getLinkKey()
         );
+    }
+
+    private String getTickerImageUrl(String tokenTicker) {
+        return tokenTicker.equals("GoerliETH") ? goerliTickerImageUrl : "";
     }
 }

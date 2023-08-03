@@ -3,6 +3,7 @@ package io.propwave.tree.utils;
 import io.propwave.tree.auth.domain.Language;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Random;
 
@@ -10,10 +11,6 @@ import java.util.Random;
 public class SamTreeUtil {
 
     private static final Random random = new Random();
-
-    public static String getTickerImageUrl(String tokenTicker) {
-        return "hello";
-    }
 
     public static String makeUserIdByEmail(String email) {
         String[] emailSplitByAtSign = email.split("@");
