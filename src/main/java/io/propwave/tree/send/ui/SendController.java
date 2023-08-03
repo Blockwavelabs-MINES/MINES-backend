@@ -27,7 +27,7 @@ public class SendController {
     private final SendService sendService;
 
     @GetMapping("/send/list")
-    public ResponseEntity<ApiResponse<Map<LocalDate, List<TransactionListResponse>>>> getTransactionList(@AuthenticationPrincipal User user, @RequestParam(name = "id", required = false) Long id) {
+    public ResponseEntity<ApiResponse<TransactionListResponse>> getTransactionList(@AuthenticationPrincipal User user, @RequestParam(name = "id", required = false) Long id) {
         return new ResponseEntity<>(
                 ApiResponse.success(Success.GET_TRANSACTION_LIST_SUCCESS, sendService.getTransactionList(user.getId(), id)),
                 HttpStatus.OK

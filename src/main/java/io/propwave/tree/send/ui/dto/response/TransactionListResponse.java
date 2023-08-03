@@ -3,6 +3,8 @@ package io.propwave.tree.send.ui.dto.response;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @ToString
 @Getter
@@ -10,21 +12,11 @@ import java.time.LocalDate;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TransactionListResponse {
 
-    private Long id;
+    private Map<LocalDate, List<TransactionInfo>> transactions;
 
-    private LocalDate createdAt;
+    private Long lastLoadedId;
 
-    private String tickerImageUrl;
-
-    private String senderName;
-
-    private String tokenAmount;
-
-    private String status;
-
-    private String linkKey;
-
-    public static TransactionListResponse of(Long id, LocalDate createdAt, String tickerImageUrl, String senderName, String tokenAmount, String status, String linkKey) {
-        return new TransactionListResponse(id, createdAt, tickerImageUrl, senderName, tokenAmount, status, linkKey);
+    public static TransactionListResponse of(Map<LocalDate, List<TransactionInfo>> transactions, Long lastLoadedId) {
+        return new TransactionListResponse(transactions, lastLoadedId);
     }
 }
