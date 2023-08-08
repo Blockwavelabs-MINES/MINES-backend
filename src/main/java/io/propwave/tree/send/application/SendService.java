@@ -163,7 +163,8 @@ public class SendService {
                 transaction.getReceiverSocialName(),
                 transaction.getTokenAmount(),
                 status,
-                transaction.getReceiveLinkInformation().getLinkKey()
+                transaction.getReceiveLinkInformation().getLinkKey(),
+                transaction.getIsRefund()
         );
     }
 
