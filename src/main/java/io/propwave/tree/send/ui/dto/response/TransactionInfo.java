@@ -26,7 +26,9 @@ public class TransactionInfo {
 
     private String linkKey;
 
-    public static TransactionInfo of(Long id, LocalDate createdAt, String tickerImageUrl, String senderName, String receiverName, String tokenAmount, String status, String linkKey) {
-        return new TransactionInfo(id, createdAt, tickerImageUrl, senderName, receiverName, tokenAmount, status, linkKey);
+    private Boolean isRefund;
+
+    public static TransactionInfo of(Long id, LocalDate createdAt, String tickerImageUrl, String senderName, String receiverName, String tokenAmount, String status, String linkKey, Boolean isRefund) {
+        return new TransactionInfo(id, createdAt, tickerImageUrl, senderName, receiverName, tokenAmount, status, linkKey, isRefund);
     }
 }
